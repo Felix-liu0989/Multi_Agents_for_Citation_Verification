@@ -1,0 +1,48 @@
+{
+    "label": "natural_language_processing_evaluation_methods",
+    "description": null,
+    "level": 0,
+    "source": "initial",
+    "children": [
+        {
+            "label": "intrinsic_evaluation",
+            "description": "Intrinsic evaluation assesses NLP models based on their performance on specific sub-tasks or components, often using standardized datasets and metrics that measure internal model capabilities rather than end-to-end application utility.",
+            "level": 1,
+            "source": "initial",
+            "children": [
+                {
+                    "label": "model-centric_evaluation",
+                    "description": "This subcategory focuses on evaluating the internal characteristics and performance of NLP models themselves, often through metrics like perplexity, BLEU, ROUGE, or F1-score, without necessarily considering their real-world utility or human perception.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "dataset-centric_evaluation",
+                    "description": "This subcategory involves assessing the quality, biases, and representativeness of the datasets used for training and evaluating NLP models, often through analyses of data distribution, annotation consistency, or the presence of artifacts that might lead to inflated model performance.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        },
+        {
+            "label": "extrinsic_evaluation",
+            "description": "Extrinsic evaluation assesses NLP models by integrating them into a larger application or system and measuring their impact on the overall performance or utility of that system, reflecting real-world applicability and downstream task effectiveness.",
+            "level": 1,
+            "source": "initial",
+            "children": [
+                {
+                    "label": "task-based_evaluation",
+                    "description": "This subcategory involves evaluating NLP models by integrating them into a larger, real-world application or task and measuring their performance based on the success of that end-to-end task, rather than isolated linguistic metrics.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "human-in-the-loop_evaluation",
+                    "description": "This subcategory focuses on evaluating NLP models by incorporating human judgment and interaction, often through user studies, expert annotations, or A/B testing, to assess the model's utility, usability, or perceived quality in a practical context.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        }
+    ]
+}

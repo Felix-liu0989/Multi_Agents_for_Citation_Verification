@@ -1,0 +1,750 @@
+title,arxiv_id,file_path,abstract,related_works,related_works_gpt4o_mini,related_work,cited_papers,quality_score
+"CoCoNUT: Structural Code Understanding does not
+fall out of a tree",,/Users/carl/PycharmProjects/RelatedWorkAnalysis/data/papers/coconut.pdf,"Large Language Models have shown impressive per-
+formance across a wide array of tasks involving both structured
+and unstructured textual data. More recently, adaptions of these
+models have drawn attention to their abilities to work with code
+across different programming languages. On this notion, different
+benchmarks for code generation, repair, or completion suggest
+that certain models have programming abilities comparable
+to or even surpass humans. In this work, we demonstrate
+that the performance on this benchmark does not translate
+to the innate ability of humans to appreciate the structural
+control flow of code.
+For this purpose, we extract code solutions from the Hu-
+manEval benchmark, which the relevant models perform very
+strongly on, and trace their execution path using function calls
+sampled from the respective test set. Using this dataset, we
+investigate the ability of 5 state-of-the-art LLMs to match the
+execution trace and find that, despite the model’s abilities to
+generate semantically identical code, they possess only limited
+ability to trace the execution path, especially for traces with
+increased length. We find that even the top-performing model,
+Gemini 1.5 Pro can only fully correctly generate the trace of
+47% of HumanEval tasks.
+In addition, we introduce a specific subset for three key
+structures not, or only contained to a limited extent in Hu-
+manEval: Recursion, Parallel Processing, and Object Oriented
+Programming principles, including concepts like Inheritance
+and Polymorphism. Besides OOP, we show that none of the
+investigated models achieve an average accuracy of over 5%
+on the relevant traces. Aggregating these specialized parts with
+the ubiquitous HumanEval tasks, we present the Benchmark
+CoCoNUT: Code Control Flow for Navigation Understanding
+and Testing, which measures a models ability to trace the execu-
+tion of code upon relevant calls, including advanced structural
+components. We conclude that the current generation LLMs still
+need to significantly improve to enhance their code reasoning
+abilities. We hope our dataset can help researchers bridge this
+gap in the near future.","Coding Benchmarks for LLMs. Numerous coding bench-
+marks have been proposed for LLMs in recent years. We
+summarize and compare a few popular ones here. Open
+AI HumanEval and MBPP [5] are the most popular code
+generation benchmarks. Several other benchmarks such as
+CruxEval [6], LiveCodeBench [7], and Codemind [20] include
+execution reasoning tasks (in addition to code generation)
+such as predicting the output of a code snippet given some
+input. CodeXGlue [21] is another prior dataset consisting of
+10 different coding tasks. However, it does not include any
+execution-related tasks.
+Runtime Reasoning REval [22] is the most recent work that
+proposed four execution-related tasks: coverage prediction,
+program state prediction, execution path prediction (prediction
+next statement), and output prediction. However, these tasks do
+not require the LLMs to reason about control flow or different
+programming structures like the tasks in CoCoNUT.
+Ma et al. [23] evaluate LLMs on many different tasks,
+including generating Abstract Syntax Trees, Control Flow,
+and Call Graphs. However, they limit their investigation of
+the dynamic behavior of the execution to Equivalent Mutant
+Detection and Flaky Test Reasoning, which does not directly
+concern structural understanding abilities.
+Hooda et al. [24] show that LLMs are vulnerable to different
+mutations related to control and data flow, as well as type
+and identifier assignment. A strong understanding of the
+full execution trace would help build resilience against such
+approaches. To the best of our knowledge, there is no prior
+work on evaluating the execution tracing abilities of LLMs,
+which we investigate in this work.
+Training LLMs for better execution reasoning. Few recent
+approaches focused on improving the execution reasoning of
+LLMs. For instance, Ding et al. developed a new coding
+dataset augmented with tests and execution traces and trained
+an LLM, called SemCoder [25]. They showed that such a
+training strategy elicits better code generation and execution
+reasoning from the LLM. Ni et al. [15] showed that fine-
+tuning LLMs on Chain-of-Thought reasoning over execution
+trace improved the performance of PaLM on the HumanEval
+and the MBPP benchmarks [5]. However, their approach to
+tracing mostly consists of variable states for straight-line code,
+which they insert into the source code as comments instead
+of control flow reasoning. While they demonstrate that this
+approach also works without inserting the trace, they note
+that the model exhibits hallucination issues while adapting
+the trace into natural language reasoning steps. This naturally
+motivates enhancing language models’ abilities to directly
+extract execution representations.","Recent advancements in Large Language Models (LLMs) have enabled impressive performances across a broad spectrum of tasks, ranging from natural language processing to complex programming tasks. These models, particularly those based on architectures like GPT-3 and later iterations, have been shown to exhibit notable abilities in code generation, repair, and completion across various programming languages. Benchmarks such as HumanEval (Chen et al., 2021) and CodeXGLUE (invalid citation) have demonstrated that these models can often match or exceed human-level performance in specific coding tasks, including function generation and completion.
+
+However, while LLMs excel in generating syntactically correct code, their ability to understand and trace the execution flow of code remains under-explored. Previous work has highlighted the limitations of LLMs in tasks requiring deep comprehension of code execution, particularly with respect to tracing the flow of control structures. For instance, work by (invalid citation) revealed that LLMs often struggle to generate code that correctly reflects execution flow in dynamic, context-dependent scenarios. Similarly, studies by Alon et al. (2019) and (invalid citation) emphasize that while LLMs can generate correct outputs for specific code completions, they frequently fail to maintain a coherent understanding of how different components of code interact during execution.
+
+A key limitation in these models is their lack of a true ""understanding"" of advanced programming constructs, such as recursion, parallel processing, and object-oriented programming (OOP). While HumanEval tests largely focus on fundamental programming tasks, more sophisticated constructs like inheritance and polymorphism are less well represented. Recent efforts, such as those by (invalid citation) and (invalid citation), suggest that LLMs continue to exhibit weak performance in handling complex OOP tasks, where understanding the relationships between objects and classes is crucial. This gap highlights the challenges of adapting current LLMs for tasks that require structural reasoning about code behavior over time.
+
+In response to these challenges, we introduce a novel benchmark, CoCoNUT: Code Control Flow for Navigation Understanding and Testing, which assesses LLMs' ability to trace the execution path of code, including advanced programming structures. CoCoNUT includes a subset of tasks that emphasize recursion, parallelism, and object-oriented principles, aiming to measure a model's capacity to navigate and reason about complex code structures. The introduction of this benchmark is intended to encourage further research into improving LLMs’ capabilities in code reasoning and to bridge the gap between code generation and execution tracing.","### Related Work
+
+The evaluation of Large Language Models (LLMs) in the context of code understanding and generation has been a rapidly evolving area of research. Recent studies have highlighted the impressive capabilities of LLMs in generating code across various programming languages, often achieving performance levels comparable to human developers on benchmarks like HumanEval and MBPP [1, 2]. However, these benchmarks primarily focus on the correctness of code generation, often neglecting other critical dimensions such as code reasoning and execution path tracing.
+
+Several benchmarks have been proposed to address these limitations. CodeJudge-Eval, for instance, evaluates LLMs' code understanding abilities by challenging them to determine the correctness of provided code solutions, thus probing deeper into their code reasoning capabilities [3]. Similarly, CRUXEval-X introduces a multilingual code reasoning benchmark that assesses LLMs' abilities across 19 programming languages, emphasizing the need for cross-language generalization [4]. These efforts underscore the importance of evaluating LLMs beyond mere code generation, focusing on their ability to reason about code structure and execution.
+
+The REPOCOD benchmark further extends this evaluation by incorporating real-world software development tasks, requiring file-level or repository-level context information [5]. This benchmark highlights the challenges LLMs face in real-world scenarios, where understanding complex code structures and maintaining context is crucial. Additionally, the RACE benchmark evaluates code quality across multiple dimensions, including readability, maintainability, and efficiency, providing a more comprehensive assessment of LLMs' coding capabilities [6].
+
+Despite these advancements, the ability of LLMs to trace execution paths and understand complex code structures remains limited. The proposed Benchmark CoCoNUT aims to fill this gap by focusing on the structural control flow of code, including recursion, parallel processing, and object-oriented programming principles. This aligns with the findings of previous studies, such as the work by Song et al., which highlights the limitations of LLMs in debugging and iterative code refinement [7].
+
+In conclusion, while LLMs have demonstrated remarkable progress in code generation, their ability to understand and reason about code execution paths remains an area requiring significant improvement. The introduction of benchmarks like CoCoNUT is crucial for advancing research in this domain, providing a more nuanced evaluation of LLMs' code reasoning abilities.
+
+### Citation List
+
+1. Liang, S., Hu, Y., Jiang, N., & Tan, L. (2024). Can Language Models Replace Programmers? REPOCOD Says 'Not Yet'. arXiv:2410.21647.
+2. Allamanis, M., Panthaplackel, S., & Yin, P. (2024). Unsupervised Evaluation of Code LLMs with Round-Trip Correctness. arXiv:2402.08699.
+3. Zhao, Y., Luo, Z., Tian, Y., Lin, H., Yan, W., Li, A., & Ma, J. (2024). CodeJudge-Eval: Can Large Language Models be Good Judges in Code Understanding? arXiv:2408.10718.
+4. Xu, R., Cao, J., Lu, Y., Lin, H., Han, X., He, B., Cheung, S.-C., & Sun, L. (2024). CRUXEval-X: A Benchmark for Multilingual Code Reasoning, Understanding and Execution. arXiv:2408.13001.
+5. Liang, S., Hu, Y., Jiang, N., & Tan, L. (2024). Can Language Models Replace Programmers? REPOCOD Says 'Not Yet'. arXiv:2410.21647.
+6. Zheng, J., Cao, B., Ma, Z., Pan, R., Lin, H., Lu, Y., Han, X., & Sun, L. (2024). Beyond Correctness: Benchmarking Multi-dimensional Code Generation for Large Language Models. arXiv:2407.11470.
+7. Song, J., Raiman, J., & Catanzaro, B. (2024). Effective Large Language Model Debugging with Best-first Tree Search. arXiv:2407.19055.","[('2408.10718', 'CodeJudge-Eval: Can Large Language Models be Good Judges in Code Understanding?'), ('2408.13001', 'CRUXEval-X: A Benchmark for Multilingual Code Reasoning, Understanding and Execution'), ('2410.21647', ""Can Language Models Replace Programmers? REPOCOD Says 'Not Yet'""), ('2309.15432', 'ComPile: A Large IR Dataset from Production Sources'), ('2407.11470', 'Beyond Correctness: Benchmarking Multi-dimensional Code Generation for Large Language Models'), ('2407.19055', 'Effective Large Language Model Debugging with Best-first Tree Search'), ('2311.08588', 'CodeScope: An Execution-based Multilingual Multitask Multidimensional Benchmark for Evaluating LLMs on Code Understanding and Generation'), ('2402.08699', 'Unsupervised Evaluation of Code LLMs with Round-Trip Correctness'), ('2406.15877', 'BigCodeBench: Benchmarking Code Generation with Diverse Function Calls and Complex Instructions'), ('2403.04811', 'Quantifying Contamination in Evaluating Code Generation Capabilities of Language Models')]",7.0
+"Partially private, optimistic, distributed, and verifiable machine learning inference",,/Users/carl/PycharmProjects/RelatedWorkAnalysis/data/papers/Partially Private Machine Learning Inference.pdf,"The rapid growth and increased performance of Machine Learning (ML) models have amplified the importance of privacy in ML deployment. While privacy for inputs has been extensively studied, less attention has been paid to the privacy of model parameters during inference. This work addresses this gap by proposing a solution that enables partial privacy in distributed ML inference using zero-knowledge Succinct Non-interactive Arguments of Knowledge (zkSNARKs). Our approach allows model providers to selectively reveal model sections, ensuring verifiable and tamper-proof inference across a customizable set of trusted and untrusted nodes --- ultimately creating trust among all participants. We present a proof-of-concept implementation, evaluate its performance, and discuss its feasibility for models of varying sizes. Our findings highlight minimal inference overhead throughout but indicate that proving and setup operations pose scalability challenges when parameter count rises. Promising applications of our solution exist in ML edge computing, and LoRA fine-tuned ML models, and we suggest future optimizations to extend support to larger models.","In recent years, multiple bodies of work around applying
+ZKPs to ML (inference) have surfaced [27 , 28, 29 , 30 ,
+31 , 32 ]. Although not all leverage zkSNARKs, many do,
+and some also provide promising results for larger models
+[33, 34].
+All previously mentioned work is restricted to a single-
+node context, where the entire ML model is run on a single
+node. However, there also exists literature on distributed
+ML covering distributed training, fine-tuning, and infer-
+ence approaches [35, 36 , 16 , 37 , 38, 17 , 9 , 18, 39 , 40 ]. For
+this body of work, the latter is more relevant. Verbraeken
+et al. [ 10] published a survey on distributed ML and noted
+that there are many theoretical but no practical approaches
+to privacy in distributed ML. We believe that leveraging
+zkSNARKs can be a practical solution to achieve privacy
+in distributed ML.
+In line with this, literature exists on applying ZKPs to dis-
+tributed ML in different ways [41 , 42, 43 ]. Ghaffaripour
+et al. [41 ] proposed a framework for distributed verifiable
+ML using zkSNARKs. However, no implementation, sup-
+port for arbitrary ML models, or experimental performance
+evaluation was provided.
+We expand the existing bodies of work and bring the latest
+developments in zkML to a distributed context.","The need for privacy in machine learning (ML) has gained significant attention due to the growing concerns around data security and model protection, especially in the context of ML deployment on sensitive or distributed platforms. Several studies have focused on ensuring input privacy during inference (e.g., Shokri et al., 2017), but there remains a gap in the literature concerning the privacy of model parameters during the inference process. The challenge of maintaining privacy for model parameters is especially pertinent in settings where models are deployed across distributed nodes, often involving both trusted and untrusted participants.
+
+Zero-knowledge proofs (ZKPs) have emerged as a promising approach to address this issue, offering ways to verify computations without revealing sensitive information. Notably, Succinct Non-interactive Arguments of Knowledge (zkSNARKs) have gained traction due to their efficiency and scalability, allowing for the verification of computations with minimal communication overhead (invalid citation). The use of zkSNARKs for privacy in ML has been explored in several works, such as (invalid citation), where zkSNARKs were used to protect model parameters in federated learning setups. However, many of these methods either focus on full privacy or do not provide the flexibility required for partial privacy as proposed in this study.
+
+The intersection of privacy-preserving techniques and distributed ML systems has also been investigated in edge computing scenarios. (invalid citation) demonstrated the potential of applying privacy-preserving techniques to ML models deployed in edge computing environments, where computation is offloaded to a network of devices with varying trustworthiness. In this context, ensuring both privacy and verifiability of model inferences is essential, and the proposed use of zkSNARKs in this paper builds on these foundational efforts.
+
+A promising avenue for future work lies in fine-tuned models, particularly with the introduction of Low-Rank Adaptation (LoRA) methods. LoRA fine-tuning offers a lightweight approach to adapting pre-trained models, which can be highly valuable in distributed environments where resources are limited (Hu et al., 2021). The scalability challenges presented by the parameter count, particularly during proving and setup phases, align with findings from (invalid citation), who discussed the trade-offs between efficiency and privacy in large-scale ML models.
+
+In summary, while various techniques have been proposed to address privacy in distributed ML systems, this work uniquely contributes by focusing on partial privacy for model parameters during inference, and utilizing zkSNARKs to offer a customizable solution that balances security with performance.","### Related Work
+
+The intersection of machine learning (ML) and privacy has been a vibrant area of research, particularly with the increasing deployment of ML models in sensitive applications. Privacy concerns in ML have traditionally focused on protecting input data, as seen in federated learning and secure multi-party computation frameworks [1, 2]. However, the privacy of model parameters during inference has received comparatively less attention, despite its critical importance in scenarios where model intellectual property or sensitive model parameters need protection.
+
+Recent advancements in zero-knowledge proofs, particularly zero-knowledge Succinct Non-interactive Arguments of Knowledge (zkSNARKs), have opened new avenues for ensuring privacy and verifiability in ML. zkSNARKs have been effectively used to verify ML model execution without revealing sensitive information, as demonstrated in works like ""Scaling up Trustless DNN Inference with Zero-Knowledge Proofs"" [3] and ""Verifiable evaluations of machine learning models using zkSNARKs"" [4]. These studies highlight the potential of zkSNARKs in providing non-interactive verification of ML computations, which is crucial for trustless environments.
+
+The concept of verifiable machine learning has been further explored in the context of decentralized systems. For instance, the survey by Xing et al. [5] provides a comprehensive overview of zero-knowledge proof-based verifiable machine learning, emphasizing the importance of verifiability in decentralized ML settings. Similarly, the work on ""Artemis: Efficient Commit-and-Prove SNARKs for zkML"" [6] addresses the challenge of commitment verification in zkML pipelines, showcasing significant improvements in prover costs and efficiency.
+
+In the realm of edge computing, privacy-preserving inference has been a focal point, as highlighted by Malekzadeh and Gunduz [7], who assess the risks of inference-time data reconstruction. Their work underscores the need for robust privacy mechanisms in edge computing, where model outputs can potentially leak sensitive information.
+
+Our work builds on these foundations by addressing the less-explored area of model parameter privacy during inference. By leveraging zkSNARKs, we propose a solution that allows selective revelation of model sections, ensuring verifiable and tamper-proof inference across both trusted and untrusted nodes. This approach not only enhances privacy but also fosters trust among participants in distributed ML environments, particularly in edge computing and LoRA fine-tuned models.
+
+### Citation List
+
+1. Fung, C., Koerner, J., Grant, S., & Beschastnikh, I. (2018). Dancing in the Dark: Private Multi-Party Machine Learning in an Untrusted Setting. arXiv:1811.09712.
+2. Nawaz, M., Gulati, A., Liu, K., Agrawal, V., Ananth, P., & Gupta, T. (2020). Accelerating 2PC-based ML with Limited Trusted Hardware. arXiv:2009.05566.
+3. Kang, D., Hashimoto, T., Stoica, I., & Sun, Y. (2022). Scaling up Trustless DNN Inference with Zero-Knowledge Proofs. arXiv:2210.08674.
+4. South, T., Camuto, A., Jain, S., Nguyen, S., Mahari, R., Paquin, C., Morton, J., & Pentland, A. (2024). Verifiable evaluations of machine learning models using zkSNARKs. arXiv:2402.02675.
+5. Xing, Z., Zhang, Z., Zhang, Z., Li, Z., Li, M., Liu, J., Zhang, Z., Zhao, Y., Sun, Q., Zhu, L., & Russello, G. (2023). Zero-Knowledge Proof-based Verifiable Decentralized Machine Learning in Communication Network: A Comprehensive Survey. arXiv:2310.14848.
+6. Lycklama, H., Viand, A., Avramov, N., Küchler, N., & Hithnawi, A. (2024). Artemis: Efficient Commit-and-Prove SNARKs for zkML. arXiv:2409.12055.
+7. Malekzadeh, M., & Gunduz, D. (2022). Vicious Classifiers: Assessing Inference-time Data Reconstruction Risk in Edge Computing. arXiv:2212.04223.","[('2310.14848', 'Zero-Knowledge Proof-based Verifiable Decentralized Machine Learning in Communication Network: A Comprehensive Survey'), ('2409.12055', 'Artemis: Efficient Commit-and-Prove SNARKs for zkML'), ('2210.08674', 'Scaling up Trustless DNN Inference with Zero-Knowledge Proofs'), ('2009.05566', 'Accelerating 2PC-based ML with Limited Trusted Hardware'), ('1811.09712', 'Dancing in the Dark: Private Multi-Party Machine Learning in an Untrusted Setting'), ('2212.04223', 'Vicious Classifiers: Assessing Inference-time Data Reconstruction Risk in Edge Computing'), ('2204.00032', 'Truth Serum: Poisoning Machine Learning Models to Reveal Their Secrets'), ('2402.02675', 'Verifiable evaluations of machine learning models using zkSNARKs'), ('2402.12572', 'FairProof : Confidential and Certifiable Fairness for Neural Networks'), ('2311.15310', 'Secure and Verifiable Data Collaboration with Low-Cost Zero-Knowledge Proofs')]",8.0
+"SpikeDecoder: Realizing the GPT Architecture
+with Spiking Neural Networks",,/Users/carl/PycharmProjects/RelatedWorkAnalysis/data/papers/frontiers.pdf,"The Transformer architecture is widely regarded as the most powerful tool for natural language processing, but due to the high number of complex operations, it inherently faces the issue of extensive energy consumption. To address this issue, we consider spiking neural networks (SNN), an energy-efficient alternative to common artificial neural networks (ANN) due to their naturally event-driven way of processing information. However, this inherently makes them difficult to train, which is why many SNN-related models circumvent this issue through the conversion of pre-trained ANN networks. More recently, attempts have been made to create directly trained SNN-based adaptions of the Transformer model structure. While the results showed great promise, their sole application field was computer vision and based on incorporating encoder blocks. In this paper, we propose SpikeDecoder, a fully spike-based low-power version of the Transformer decoder-only model, for application on the field of natural language processing. We further analyze the impact of exchanging different blocks of the ANN model with their spike-based alternatives to identify pain points and significant sources of performance loss. Similarly, we extend our investigation to the role of residual connections and the selection of spike-compatible normalization techniques. Besides the work on the model architecture, we formulate and compare different embedding methods to project text data into spike-range. Finally, it will be demonstrated that the spiking decoder block reduces the theoretical energy consumption by 87 to 93 percent compared to the power required for a regular encoder block.","Spiking Neural Networks (SNNs) have experienced rising popularity as part of the third generation of neural networks (Maass, 1997; Ghosh-Dastidar and Adeli, 2009). Due to the all-or-nothing principle employed in their natural way of information propagation, they have the potential to reduce energy consumption. Correspondingly, SNNs may be used to transform the GPT natural language architecture into a cost-effective alternative while preserving as much of the original performance as possible. By design, such an SNN structure could be adapted through neuromorphic hardware to realize this advantage.
+
+To design such a model, the attention mechanism as proposed by Vaswani et al. (2017) is a key work with high relevance. Their innovative approach has become the dominant one for natural language processing. However, while powerful, the multi-head-attention technique consists of a set of (at least) two matrix dot products and a softmax operation, which are by nature ill-suited to SNNs. This issue is addressed by Zhou et al. (2022), which was the paper that introduced the Spiking Self Attention (SSA) block inside an encoder-only structure used for image classification. While the model also contains common linear layers, the model’s main components remain neuromorphic through an alternating structure with spiking neurons. The corresponding model outperformed the majority of SNN-based image classification models and even reached a competitive level with ANNs on some datasets. Through the pure binary value range, the matrix dot product can be formulated in a way that avoids MAC operations and, in addition, the softmax operation is made obsolete. Zhou et al. (2023) reformed the existing Spikformer model by adjusting the residual connections in order to prevent MAC operations on the sum of produced binary outputs, which were passed as input to linear layers. This is done by re-ordering the affected blocks and placing a spiking node directly after the summation operator. This not only reduces the cost of operations but also increases the model's performance.
+
+Another SNN-based model that adapts the architecture of a Vision Transformer is Li et al. (2022). They use an adapted attention mechanism that takes both spatial as well as temporal information into account. However, this approach is not exclusively spiking and computationally more expensive than Spikformer. Apart from the decoder-based architecture, one of the stronger directly trained SNN networks is spike-element-wise ResNet, which was introduced in Fang et al. (2021) and outperformed all directly trained SNN models on major image datasets prior to Spikformer.
+
+In the field of natural language processing, there have been very few attempts at SNN-based applications. The most relevant one is Zhu et al. (2023), where SpikeGPT was proposed, the first directly trained spiking model for language generation. It is worth noting that this model does not use self-attention but instead employs RWKV, a technique based on Recurrent Neural Networks. In addition, this model is not fully spiking and applies MAC operations on different points throughout the model. Mueller et al. (2021) presented an effective way of ANN-SNN conversion, which adapts the structure and weights of a pre-trained Transformer model into a rate-coded SNN architecture. While the resulting model is fully spiking and performant, it is not trained directly.
+
+Thus, a fully trainable spiking (decoder-only) Transformer language model has yet to be developed. With this paper, we present a novel, fully spiking model based on the GPT architecture for natural language generation. Furthermore, we investigate the impact of normalization, embedding, and residual connections in the resulting structure.","The Transformer architecture has emerged as the cornerstone of modern natural language processing (NLP), with its ability to model long-range dependencies through self-attention mechanisms (Vaswani et al., 2017). However, the widespread adoption of Transformers in various NLP tasks has been accompanied by concerns about their energy consumption, primarily due to the large number of computations involved (Strubell et al., 2019). This issue has led to exploration in reducing the energy consumption of neural networks, and one promising approach is the use of spiking neural networks (SNNs). SNNs are biologically inspired models that process information in an event-driven manner, where neurons fire only when necessary, offering the potential for significant energy savings (Maass, 1997). Despite their energy efficiency, SNNs have struggled with training due to their non-differentiable nature, which has hindered their application in many domains (invalid citation).
+
+To bridge the gap between the performance of standard artificial neural networks (ANNs) and the energy efficiency of SNNs, researchers have explored converting pre-trained ANNs into their spiking counterparts (Diehl et al., 2015). Recent advancements have seen attempts to adapt the Transformer model structure into SNNs, though most work has focused on the vision domain, incorporating spiking encoder blocks (invalid citation). These studies have demonstrated that spiking variants of Transformer models can outperform traditional models in terms of energy efficiency, but their application has been limited to computer vision tasks. While such results are promising, there remains a need for spiking models tailored to NLP.
+
+One of the most significant efforts to address this gap is the development of SpikeDecoder, a spike-based adaptation of the Transformer decoder model. This work aims to reduce the energy consumption of NLP models by replacing traditional components with their spiking counterparts. By incorporating different spike-based alternatives for model blocks and analyzing their performance, the authors identify key factors contributing to the loss of accuracy in SNNs. Additionally, the role of residual connections and normalization techniques that are compatible with spike-based models are explored to further improve performance. The resulting architecture demonstrates a substantial reduction in energy consumption—between 87% and 93%—when compared to the standard Transformer model, highlighting the potential of SNNs for energy-efficient NLP applications (this paper).
+
+Further research is required to refine these spike-based models and broaden their application, but the promising results suggest that spiking neural networks could offer a viable solution to the growing concern of energy consumption in large-scale NLP models.","### Related Work
+
+The Transformer architecture has become a cornerstone in natural language processing (NLP) due to its ability to handle complex tasks with high accuracy. However, its extensive energy consumption remains a significant challenge, primarily due to the high number of complex operations involved [1]. To mitigate this issue, spiking neural networks (SNNs) have emerged as a promising alternative. SNNs are inspired by the human brain's event-driven processing, offering a more energy-efficient approach compared to traditional artificial neural networks (ANNs) [2, 3].
+
+Despite their potential, SNNs are notoriously difficult to train directly due to their non-differentiable nature. This has led to the development of methods that convert pre-trained ANN models into SNNs, allowing them to leverage the training advantages of ANNs while benefiting from the energy efficiency of SNNs [4, 5]. Recent advancements have also seen the direct training of SNN-based adaptations of the Transformer model, primarily in the domain of computer vision. These models have shown promise but have largely focused on encoder blocks, leaving the decoder architecture underexplored [6, 7].
+
+In the realm of NLP, several studies have attempted to integrate SNNs with Transformer architectures. For instance, SpikeBERT and SpikeLM have demonstrated the feasibility of using SNNs for language tasks, achieving competitive performance with reduced energy consumption [8, 9]. These models often employ knowledge distillation techniques to bridge the performance gap between SNNs and their ANN counterparts [10]. Additionally, the exploration of spike-driven mechanisms in language models, such as SpikeGPT, highlights the potential of SNNs in generative tasks, although challenges remain in maintaining performance parity with traditional models [11].
+
+The proposed SpikeDecoder aims to address these challenges by focusing on the decoder-only model structure, which has been less explored in the context of SNNs. By analyzing the impact of replacing ANN components with spike-based alternatives, this work seeks to identify critical areas of performance loss and optimize the architecture for energy efficiency. Furthermore, the investigation into spike-compatible normalization techniques and embedding methods is crucial for enhancing the model's applicability in NLP tasks.
+
+### Citation List
+
+1. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). Attention is all you need. In Advances in neural information processing systems (pp. 5998-6008).
+2. Maass, W. (1997). Networks of spiking neurons: The third generation of neural network models. Neural networks, 10(9), 1659-1671.
+3. Gerstner, W., & Kistler, W. M. (2002). Spiking neuron models: Single neurons, populations, plasticity. Cambridge University Press.
+4. Rueckauer, B., Lungu, I. A., Hu, Y., Pfeiffer, M., & Liu, S. C. (2017). Conversion of continuous-valued deep networks to efficient event-driven networks for image classification. Frontiers in neuroscience, 11, 682.
+5. Sengupta, A., Ye, Y., Wang, R., Liu, C., & Roy, K. (2019). Going deeper in spiking neural networks: VGG and residual architectures. Frontiers in neuroscience, 13, 95.
+6. Yao, M., Hu, J., Zhou, Z., Yuan, L., Tian, Y., Xu, B., & Li, G. (2023). Spike-driven Transformer. arXiv preprint arXiv:2307.01694.
+7. Wang, Z., Fang, Y., Cao, J., Zhang, Q., Wang, Z., & Xu, R. (2022). Masked Spiking Transformer. arXiv preprint arXiv:2210.01208.
+8. Lv, C., Li, T., Xu, J., Gu, C., Ling, Z., Zhang, C., Zheng, X., & Huang, X. (2023). SpikeBERT: A Language Spikformer Learned from BERT with Knowledge Distillation. arXiv preprint arXiv:2308.15122.
+9. Xing, X., Zhang, Z., Ni, Z., Xiao, S., Ju, Y., Fan, S., Wang, Y., Zhang, J., & Li, G. (2024). SpikeLM: Towards General Spike-Driven Language Modeling via Elastic Bi-Spiking Mechanisms. arXiv preprint arXiv:2406.03287.
+10. Bal, M., Jiang, Y., & Sengupta, A. (2024). Exploring Extreme Quantization in Spiking Language Models. arXiv preprint arXiv:2405.02543.
+11. Zhu, R. J., Zhao, Q., Li, G., & Eshraghian, J. K. (2023). SpikeGPT: Generative Pre-trained Language Model with Spiking Neural Networks. arXiv preprint arXiv:2302.13939.","[('2409.02111', 'Toward Large-scale Spiking Neural Networks: A Comprehensive Survey and Future Directions'), ('2406.03287', 'SpikeLM: Towards General Spike-Driven Language Modeling via Elastic Bi-Spiking Mechanisms'), ('2401.17911', 'SNNLP: Energy-Efficient Natural Language Processing Using Spiking Neural Networks'), ('2406.03470', 'SpikeZIP-TF: Conversion is All You Need for Transformer-based SNN'), ('2308.15122', 'SpikeBERT: A Language Spikformer Learned from BERT with Knowledge Distillation'), ('2406.19230', 'Spiking Convolutional Neural Networks for Text Classification'), ('2405.02543', 'Exploring Extreme Quantization in Spiking Language Models'), ('2307.01694', 'Spike-driven Transformer'), ('2210.01208', 'Masked Spiking Transformer'), ('2302.13939', 'SpikeGPT: Generative Pre-trained Language Model with Spiking Neural Networks')]",8.0
+"T2Vid: Translating Long Text into Multi-Image
+is the Catalyst for Video-LLMs",2411.19951,,"The success of Multimodal Large Language Models
+(MLLMs) in the image domain has garnered wide attention from the research community. Drawing on previous
+successful experiences, researchers have recently explored
+extending the success to the video understanding realms.
+Apart from training from scratch, an efficient way is to utilize the pre-trained image-LLMs, leading to two mainstream
+approaches, i.e. zero-shot inference and further fine-tuning
+with video data. In this work, our study of these approaches
+harvests an effective data augmentation method. We first
+make a deeper inspection of the zero-shot inference way and
+identify two limitations, i.e. limited generalization and lack
+of temporal understanding capabilities. Thus, we further
+investigate the fine-tuning approach and find a low learning efficiency when simply using all the video data samples,
+which can be attributed to a lack of instruction diversity.
+Aiming at this issue, we develop a method called T2Vid
+to synthesize video-like samples to enrich the instruction
+diversity in the training corpus. Integrating these data enables a simple and efficient training scheme, which achieves
+performance comparable to or even superior to using full
+video datasets by training with just 15% the sample size.
+Meanwhile, we find that the proposed scheme can boost
+the performance of long video understanding without training with long video samples. We hope our study will spark
+more thinking about using MLLMs for video understanding
+and curation of high-quality data. The code is releas","2.1. Multimodal Large Language Models
+The research on Multi-modal large language models
+(MLLMs) has garnered wide attention from both industry
+and academia. Stimulated by the extraordinary capabilities
+that GPT-4 [29] series have shown, researchers have delved
+into developing open-sourced models that can compete with
+or surpass this amazing close-sourced product.
+Image-LLMs. To develop image-LLMs, the mainstream
+approach is to build upon powerful pre-trained LLMs and
+extend LLMs with the capability to perceive and reason with
+images [1, 24]. Based on a two-stage training recipe, i.e.
+image-text alignment training and instruction tuning, the
+developed model can fulfill a wide range of multimodal
+user queries and present its answers in user-friendly natural
+language sentences.
+Video-LLMs. Following the success of image-LLMs, subsequent endeavors aim to expand the triumph of image comprehension to more intricate video understanding. Works
+like Video-ChatGPT [27], VTimeLLM [13], PLLaVA [34]
+and LLaVA-NeXT-Video [44] attempt further fine-tune
+image-LLMs to enhance video understanding capability.
+Other research [7, 15, 18, 22] explores training from pretrained LLM, following the basic alignment-then-finetuning
+paradigm similar to image-LLM. These approaches usually
+involve joint training that mixes image and video data in
+the training corpus. In this study, we build upon pre-trained
+image-LLMs and enhance video understanding capabilities
+through fine-tuning.
+2.2. Zero-shot Inference for Video Understanding
+Apart from further training, an alternative way is to design
+training-free approaches to perform zero-shot inference with
+image-LLMs. For example, IG-VLM [16] arranges multiple
+video frames into a single image grid and designs corresponding prompts to help models understand the grid format.
+Given a limited total resolution of image input, there is a
+trade-off between resolutions and the number of sampled
+video frames. SF-LLaVA [35] scales up the number of input frames by introducing a dual-stream design, where the
+slow branch utilizes more spatial tokens extracted with a
+lower frame rate, while the fast branch is the opposite. Free
+Video-LLM [12] focuses on efficient inference and introduces independent prompt-guided sampling strategies for
+spatial and temporal dimensions.
+However, these methods are generally evaluated on more
+traditional benchmarks like MSVD-QA [33], TGIF-QA [14]
+and ActivityNet-QA [41]). These benchmarks are generally
+domain-specific and focus on certain basic skills, such as
+action recognition and repetition count, which lack comprehensiveness in both length coverage (especially in longer
+videos) and skill coverage. Moreover, the questions asked
+often involve shallow perception without deeper reasoning.
+Recently, with the rise of benchmarks specifically designed for MLLMs [9, 18, 26], a more in-depth and comprehensive evaluation has become more accessible. Compared
+to previous traditional benchmarks, these newly developed
+benchmarks are generally more challenging, often entailing
+composite skills and a finer-grained understanding of the
+video (e.g. the plot in the movie or causal relationships between events), and can be much longer in duration (e.g. up
+to 60 minutes in the Video-MME benchmark). In this work,
+we identify the potential limitations of zero-shot inference
+using these newly developed video benchmarks.","Recent research has shown a growing interest in extending the capabilities of Multimodal Large Language Models (MLLMs) from the image domain to video understanding tasks. One key area of exploration has been the application of pre-trained image-LLMs to video data, leveraging two primary strategies: zero-shot inference and fine-tuning on video data. Zero-shot inference, which allows MLLMs to apply learned image knowledge to unseen video data, has proven effective but faces limitations such as poor generalization and insufficient temporal understanding capabilities. Several studies have examined these shortcomings, proposing various methods for enhancing zero-shot performance. For instance, some approaches have focused on incorporating temporal cues and spatiotemporal representations to better capture video dynamics (invalid citation).
+
+On the other hand, fine-tuning image-based models using video data has also gained traction as a means to improve performance on video tasks. However, the fine-tuning process often suffers from low learning efficiency when the video data used lacks sufficient instruction diversity. This limitation has been addressed in various studies through data augmentation strategies. Notably, some research has focused on generating synthetic video data to supplement real video samples, improving the diversity of instructions and enhancing the training process (invalid citation). In particular, methods that synthesize video-like samples to expand the training corpus have shown promise in reducing the required sample size while maintaining or improving model performance (invalid citation). These data augmentation techniques are particularly beneficial when working with smaller datasets or when training long video models without direct access to long video samples.
+
+Building on these works, our study presents a new data augmentation method, T2Vid, which synthesizes video-like samples to enrich the instruction diversity in the training corpus. The proposed method demonstrates that a reduced training sample size—just 15% of the full video dataset—can achieve performance comparable to or better than training with the complete dataset. Additionally, our findings suggest that this approach can significantly enhance long video understanding without requiring long video samples in the training process. This approach complements recent advancements in MLLMs, which have been shown to be capable of more efficient and effective video processing through careful data selection and augmentation techniques.
+","### Related Work
+
+The field of Multimodal Large Language Models (MLLMs) has seen significant advancements, particularly in the domain of image understanding. These models have demonstrated impressive capabilities in processing and interpreting multimodal data, which has naturally led researchers to explore their potential in video understanding tasks. The transition from image-based models to video-based models presents unique challenges and opportunities, as videos inherently contain temporal dynamics that static images do not.
+
+Recent studies have focused on leveraging pre-trained image-LLMs for video understanding, primarily through two approaches: zero-shot inference and fine-tuning with video data. Zero-shot inference allows models to apply learned knowledge from image data to video tasks without additional training, but it often suffers from limited generalization and a lack of temporal understanding capabilities [1, 2]. This limitation has prompted further investigation into fine-tuning strategies, which involve adapting pre-trained models to video data to enhance their performance [3, 4].
+
+Fine-tuning, however, is not without its challenges. One significant issue is the low learning efficiency observed when using large video datasets, which can be attributed to a lack of instruction diversity in the training data [5]. To address this, researchers have proposed various data augmentation techniques to enrich the training corpus and improve model performance. For instance, the T2Vid method synthesizes video-like samples to increase instruction diversity, enabling more efficient training with a reduced dataset size [6].
+
+Moreover, the development of methods that enhance long video understanding without the need for extensive long video datasets is an area of active research. Techniques such as progressive pooling and context window extension have been proposed to manage the memory consumption and computational demands associated with processing long video sequences [7, 8]. These methods aim to extend the capabilities of MLLMs to handle the complex temporal dependencies present in long videos.
+
+Overall, the integration of MLLMs into video understanding tasks is a rapidly evolving field, with ongoing research focused on improving model efficiency, generalization, and temporal reasoning. The proposed T2Vid method contributes to this body of work by offering a novel approach to data augmentation that enhances training efficiency and performance, even with limited video data.
+
+### Citation List
+
+1. Qu, T., Li, M., Tuytelaars, T., & Moens, M.-F. (2024). TS-LLaVA: Constructing Visual Tokens through Thumbnail-and-Sampling for Training-Free Video Large Language Models. arXiv:2411.11066.
+2. Huang, S., Zhang, H., Gao, Y., Hu, Y., & Qin, Z. (2024). From Image to Video, what do we need in multimodal LLMs? arXiv:2404.11865.
+3. Wei, H., & Chen, Z. (2024). Visual Context Window Extension: A New Perspective for Long Video Understanding. arXiv:2409.20018.
+4. Yao, H., Wu, W., Yang, T., Song, Y., Zhang, M., Feng, H., Sun, Y., Li, Z., Ouyang, W., & Wang, J. (2024). Dense Connector for MLLMs. arXiv:2405.13800.
+5. Ataallah, K., Shen, X., Abdelrahman, E., Sleiman, E., Zhu, D., Ding, J., & Elhoseiny, M. (2024). MiniGPT4-Video: Advancing Multimodal LLMs for Video Understanding with Interleaved Visual-Textual Tokens. arXiv:2404.03413.
+6. Liu, J., Wang, Y., Ma, H., Wu, X., Ma, X., Wei, X., Jiao, J., Wu, E., & Hu, J. (2024). Kangaroo: A Powerful Video-Language Model Supporting Long-context Video Input. arXiv:2408.15542.
+7. Jin, Y., Sun, Z., Xu, K., Xu, K., Chen, L., Jiang, H., Huang, Q., Song, C., Liu, Y., Zhang, D., Song, Y., Gai, K., & Mu, Y. (2024). Video-LaVIT: Unified Video-Language Pre-training with Decoupled Visual-Motional Tokenization. arXiv:2402.03161.
+8. Ranasinghe, K., Li, X., Kahatapitiya, K., & Ryoo, M. S. (2024). Understanding Long Videos with Multimodal Language Models. arXiv:2403.16998.","[('2411.11066', 'TS-LLaVA: Constructing Visual Tokens through Thumbnail-and-Sampling for Training-Free Video Large Language Models'), ('2404.11865', 'From Image to Video, what do we need in multimodal LLMs?'), ('2409.20018', 'Visual Context Window Extension: A New Perspective for Long Video Understanding'), ('2405.13800', 'Dense Connector for MLLMs'), ('2404.03413', 'MiniGPT4-Video: Advancing Multimodal LLMs for Video Understanding with Interleaved Visual-Textual Tokens'), ('2408.15542', 'Kangaroo: A Powerful Video-Language Model Supporting Long-context Video Input'), ('2402.03161', 'Video-LaVIT: Unified Video-Language Pre-training with Decoupled Visual-Motional Tokenization'), ('2403.16998', 'Understanding Long Videos with Multimodal Language Models'), ('2406.14129', 'Towards Event-oriented Long Video Understanding'), ('2409.18938', 'From Seconds to Hours: Reviewing MultiModal Large Language Models on Comprehensive Long Video Understanding')]",6.0
+Reverse Thinking Makes LLMs Stronger Reasoners,2411.19865,,"Reverse thinking plays a crucial role in human
+reasoning. Humans can reason not only from a
+problem to a solution but also in reverse, i.e., start
+from the solution and reason towards the problem. This often enhances overall reasoning performance as it enables consistency checks between
+their forward and backward thinking. To enable
+Large Language Models (LLMs) to perform reverse thinking, we introduce Reverse-Enhanced
+Thinking (REVTHINK), a framework composed of
+data augmentation and learning objectives. In REVTHINK, we augment the dataset by collecting structured forward-backward reasoning from a teacher
+model, consisting of: (1) the original question, (2)
+forward reasoning, (3) backward question, and (4)
+backward reasoning. We then employ three objectives to train a smaller student model in a multi-task
+learning fashion: (a) generate forward reasoning
+from a question, (b) generate a backward question
+from a question, and (c) generate backward reasoning from the backward question. Experiments
+across 12 datasets covering commonsense, math,
+and logical reasoning show an average 13.53%
+improvement over the student model’s zero-shot
+performance and a 6.84% improvement over the
+strongest knowledge distillation baselines. Moreover, our method demonstrates sample efficiency
+– using only 10% of the correct forward reasoning
+from the training data, it outperforms a standard
+fine-tuning method trained on 10× more forward
+reasoning. REVTHINK also exhibits strong generalization to out-of-distribution held-out datasets.","Reasoning with LLMs. A large body of research
+has shown that LLM reasoning can be improved via
+advanced test-time approaches, such as prompting
+and aggregation. Representative methods include
+Chain-of-Thought (CoT) (Kojima et al., 2022; Wei
+et al., 2022) and Self-Consistency (Wang et al.,
+2022), Tree-of-Thought prompting (Yao et al.,
+2024), Self-Reflection (Shinn et al., 2024; Madaan
+et al., 2024; Yao et al., 2022), Multi-agent collaboration (Du et al., 2023; Liang et al., 2023; Wang
+et al., 2023; Lu et al., 2024; Feng et al., 2024;
+Chen et al., 2023). Several works have been proposed to leverage backward reasoning to verify
+the chain-of-thought and improve math reasoning
+(Weng et al., 2022; Jiang et al., 2024), while effective, these methods operate on test time, showing
+moderate improvements compared to other testtime methods like self-consistency (Wang et al.,
+2022). Also, these methods have mostly been developed for mathematical tasks, limiting their generalizability. In contrast, REVTHINK trains the student model using carefully curated data, enabling
+it to develop backward reasoning skills in a structured manner. This approach maintains the same
+test-time efficiency as zero-shot prompting, while
+delivering greater improvements and generalizing
+to a broader range of tasks.
+Knowledge Distillation. Knowledge distillation
+is an effective way to transfer knowledge from a
+larger teacher model to a smaller student model.
+Classic knowledge distillation learns from the
+teacher model’s distribution, and the objective is to
+minimize the student distribution with the teacher
+(Hinton et al., 2015; Bucilua et al. ˇ , 2006; Chen
+et al., 2020). Recent advancements in LLMs have
+shifted the focus toward leveraging the outputs
+of these larger models. Teacher models provide
+Chain-of-Thought rationales, which can be sampled directly from the teacher (West et al., 2022;
+Li et al., 2023a; Hsieh et al., 2023; Fu et al., 2023;
+Magister et al., 2022; Mukherjee et al., 2023; Mitra et al., 2023), generated via bootstrapping (Zelikman et al., 2022; Lewkowycz et al., 2022; Li
+et al., 2023b), or obtained from multiple teacher
+models (Chen et al., 2024; You et al., 2017). Additionally, teacher model outputs can be used to
+augment ground truth data (Ding et al., 2024). Our
+method aligns with this recent trend, leveraging the
+teacher model to generate CoT reasoning, along
+with backward questions and backward reasoning
+to augment data. A line of work focuses on improving math reasoning by bootstrapping math-specific
+datasets (Yu et al., 2024; Li et al., 2024; Yuan et al.,
+2023), as we argue in Section 1, math reasoning
+is inherently structured, making it more suitable
+for bootstrapping via modifications to names and
+variables. Similarly, Guo et al. (2024) reverse existing math datasets and find that even powerful
+LLMs struggle to solve them – implying that these
+models may be memorizing the problems without
+genuine comprehension. To the best of our knowledge, we are the first attempt to teach a smaller
+student model to reason backward, across a broad
+spectrum of reasoning tasks.
+Dual Learning. Dual learning has been extensively studied in machine translation (Sennrich
+et al., 2016; Xia et al., 2018; He et al., 2016), dialog
+generation (Lv et al., 2023; Shen et al., 2018; Li
+et al., 2021), and question-answering (Tang et al.,
+2017). The core concept is to leverage the primaldual structure inherent to a task, such as the bidirectional relationship between English and German in
+translation. This duality acts as a form of regularization during training, thereby enhancing performance across both tasks. REVTHINK also incorporates backward question generation and backward
+reasoning as forms of regularization to improve reasoning capabilities. While dual learning is closely
+related to our work, the dual relationships established in prior studies—such as source-target language pairs in machine translation—are relatively
+straightforward. In contrast, we focus on the mutually inverse relationship between a question and
+its backward counterpart. In our reasoning tasks,
+backward questions and backward reasoning are
+often absent and must be generated by LLMs. Our
+innovation lies in establishing connections between
+forward questions with forward reasoning and backward questions with backward reasoning, thereby
+exploiting the consistency of this connection within
+our training objectives.","The idea of reverse reasoning, which involves reasoning from solution to problem rather than the traditional problem-to-solution approach, has garnered increasing attention in cognitive science and artificial intelligence. In human cognition, reverse thinking is believed to enhance reasoning performance by enabling consistency checks between forward and backward thinking (invalid citation). This dual approach allows individuals to evaluate potential solutions before they commit to a problem-solving path, contributing to more robust decision-making processes.
+
+Several works in the field of Artificial Intelligence (AI) have explored the concept of reverse thinking and its application to automated reasoning systems. In particular, methods leveraging Large Language Models (LLMs) have shown promise in performing complex reasoning tasks. For instance, research on knowledge distillation has highlighted the importance of training smaller, more efficient models to mimic the reasoning behavior of larger, pre-trained teacher models (Hinton et al., 2015). However, this approach often focuses on forward reasoning tasks and does not address the reverse reasoning aspect.
+
+In response to this gap, the REVTHINK framework introduces a novel method of augmenting training datasets by collecting structured forward-backward reasoning pairs. This idea is closely related to data augmentation strategies commonly used to improve model performance in NLP (invalid citation). By using both forward and backward reasoning tasks in a multi-task learning setup, REVTHINK trains a student model to generate both forward and backward reasoning from a given question. This method parallels existing multi-task learning approaches, such as those proposed in the BERT framework (Devlin et al., 2018), which has shown that training on multiple related tasks can lead to significant performance improvements.
+
+Furthermore, the REVTHINK framework's emphasis on sample efficiency is aligned with recent research on improving data efficiency in machine learning, particularly within the context of few-shot learning (Brown et al., 2020). By using only a small fraction of correct forward reasoning data, REVTHINK demonstrates that LLMs can outperform traditional fine-tuning methods that require much larger datasets. This result contributes to ongoing work in improving model efficiency and generalization capabilities, as seen in the success of methods like Meta-learning (Finn et al., 2017) and transfer learning (invalid citation).
+
+Finally, REVTHINK's strong generalization to out-of-distribution held-out datasets extends research on the robustness of AI models in dealing with novel inputs. Techniques like domain adaptation and domain generalization (invalid citation) have been explored to enhance the robustness of models, and REVTHINK provides compelling evidence that reverse reasoning can aid in improving this aspect.","### Related Work
+
+Reverse thinking, a cognitive process where reasoning is conducted from a solution back to the problem, has been recognized as a powerful tool in human reasoning. This approach allows for consistency checks between forward and backward reasoning, enhancing overall reasoning performance. In the context of artificial intelligence, particularly with large language models (LLMs), there has been a growing interest in incorporating such human-like reasoning capabilities to improve model performance across various tasks.
+
+Recent advancements in reasoning with LLMs have focused on enhancing their ability to perform complex reasoning tasks through various techniques. Chain-of-Thought (CoT) prompting has been a popular method, where models are guided to generate intermediate reasoning steps to arrive at a solution, thereby improving their reasoning capabilities (Wei et al., 2022). However, these methods often face challenges such as spurious correlations and information loss, which can degrade performance (Li et al., 2024).
+
+To address these challenges, several studies have proposed innovative frameworks. For instance, Dai et al. (2024) introduced Cascading Decomposed CoTs Distillation (CasCoD), which restructures the learning process to focus on rationales without interference from preset answers, thereby improving reasoning generalizability. Similarly, Chen et al. (2023) proposed RECKONING, a method that updates model parameters with contextual knowledge to enhance reasoning robustness and efficiency.
+
+The concept of reverse thinking has been explored in various forms. He and Lu (2024) developed CauseJudger, a framework for abductive logical reasoning that transforms thinking from reverse to forward, effectively identifying the authenticity of possible causes. This approach highlights the potential of reverse thinking in improving reasoning accuracy and robustness.
+
+In the realm of knowledge distillation, several methods have been proposed to transfer reasoning capabilities from large models to smaller ones. Li et al. (2023) emphasized the importance of leveraging negative data in distillation processes to enhance model specialization. Feng et al. (2024) introduced a progressive distillation strategy that mimics human cognitive progression, starting with easier tasks and advancing to more complex ones.
+
+The proposed Reverse-Enhanced Thinking (REVTHINK) framework builds upon these advancements by integrating reverse thinking into the training process of LLMs. By augmenting datasets with structured forward-backward reasoning and employing multi-task learning objectives, REVTHINK not only improves reasoning performance but also demonstrates strong generalization capabilities and sample efficiency. This aligns with the findings of Zhang et al. (2024), who highlighted the benefits of reflective augmentation in enhancing model comprehension and performance.
+
+### Citation List
+
+- Dai, C., Li, K., Zhou, W., & Hu, S. (2024). Improve Student's Reasoning Generalizability through Cascading Decomposed CoTs Distillation. arXiv preprint arXiv:2405.19842.
+- Chen, Z., Weiss, G., Mitchell, E., Celikyilmaz, A., & Bosselut, A. (2023). RECKONING: Reasoning through Dynamic Knowledge Encoding. arXiv preprint arXiv:2305.06349.
+- He, J., & Lu, F. (2024). CauseJudger: Identifying the Cause with LLMs for Abductive Logical Reasoning. arXiv preprint arXiv:2409.05559.
+- Li, Y., Yuan, P., Feng, S., Pan, B., Sun, B., Wang, X., Wang, H., & Li, K. (2023). Turning Dust into Gold: Distilling Complex Reasoning Capabilities from LLMs by Leveraging Negative Data. arXiv preprint arXiv:2312.12832.
+- Feng, K., Li, C., Zhang, X., Zhou, J., Yuan, Y., & Wang, G. (2024). Keypoint-based Progressive Chain-of-Thought Distillation for LLMs. arXiv preprint arXiv:2405.16064.
+- Zhang, Z., Ge, T., Liang, Z., Yu, W., Yu, D., Jia, M., Yu, D., & Jiang, M. (2024). Learn Beyond The Answer: Training Language Models with Reflection for Mathematical Reasoning. arXiv preprint arXiv:2406.12050.
+- Li, J., Cao, P., Wang, C., Jin, Z., Chen, Y., Zeng, D., Liu, K., & Zhao, J. (2024). Focus on Your Question! Interpreting and Mitigating Toxic CoT Problems in Commonsense Reasoning. arXiv preprint arXiv:2402.18344.
+- Wei, J., et al. (2022). Chain-of-Thought Prompting Elicits Reasoning in Large Language Models. arXiv preprint arXiv:2201.11903.","[('2405.19842', ""Improve Student's Reasoning Generalizability through Cascading Decomposed CoTs Distillation""), ('2305.06349', 'RECKONING: Reasoning through Dynamic Knowledge Encoding'), ('2310.05057', 'BRAINTEASER: Lateral Thinking Puzzles for Large Language Models'), ('2312.12832', 'Turning Dust into Gold: Distilling Complex Reasoning Capabilities from LLMs by Leveraging Negative Data'), ('2405.16064', 'Keypoint-based Progressive Chain-of-Thought Distillation for LLMs'), ('2212.09721', 'KNIFE: Distilling Reasoning Knowledge From Free-Text Rationales'), ('2406.12050', 'Learn Beyond The Answer: Training Language Models with Reflection for Mathematical Reasoning'), ('2405.16129', 'iREL at SemEval-2024 Task 9: Improving Conventional Prompting Methods for Brain Teasers'), ('2409.05559', 'CauseJudger: Identifying the Cause with LLMs for Abductive Logical Reasoning'), ('2402.18344', 'Focus on Your Question! Interpreting and Mitigating Toxic CoT Problems in Commonsense Reasoning')]",8.0
+Money Burning Improves Mediated Communication,2411.19431,,"This paper explores the problem of mediated communication enhanced by moneyburning tactics for commitment power. In our model, the sender has state-independent
+preferences and can design a communication mechanism that both transmits messages
+and burns money. We characterize the sender’s maximum equilibrium payoff, which has
+clear geometric interpretations and is linked to two types of robust Bayesian persuasion.
+We demonstrate that, generically, the money-burning tactic strictly improves the sender’s
+payoff for almost all prior beliefs where commitment is valuable for the sender. Furthermore, our communication model directly applies to Web 3.0 communities, clarifying the
+commitment value within these contexts.","This paper proposes a novel communication protocol where adopting the money-burning tactic enhances the credibility in a limited commitment environment. Our work contributes to the literature that studies communication protocols under various degrees of commitment power. In addition to the literature mentioned earlier, Min (2021), Lipnowski et al. (2022) concentrate on the case where Sender’s commitment power has a Bernoulli distribution on full commitment and no commitment; and Lin and Liu (2024) examine the situation where Sender cannot commit to the message-generating process but he can commit to the marginal distribution of types and messages. Bergemann and Morris (2019) summarize information design problems involving persuasion and mediation. Furthermore, our paper is closely related to studies that analyze the effect of commitment on information design under various communication protocols. Fréchette et al. (2022) investigate the effect of communication with different levels of commitment power through experimental methods. Additionally, Corrao and Dai (2023) comparatively analyze different communication protocols at various levels of commitment power, but they do not take money burning into account.
+
+The main contribution of this paper is to extend the domain of mediated communication problems. Previous research, such as Salamanca (2021), illustrates the optimal equilibrium payoff of Sender through mediated communication without burning money. Drakopoulos et al. (2023) establish a blockchain system as a mediator, demonstrating that designing costly messages can improve MD under transparent motives, but they do not identify the optimal Sender’s communication efficiency in general as we do, and they also do not identify the condition where costly messages improve MD. Additionally, several studies, including Goltsman et al. (2009), Ivanov (2014), have identified the optimal mediation plan for Receiver. Furthermore, Ivanov (2014) compares the outcomes of mediated communication and cheap talk.
+
+Our paper is also related to the literature on communication with transfers. Some studies discuss cheap talk involving money burning, Austen-Smith and Banks (2000), Kartik (2007), Karamychev and Visser (2017), noting that Sender nearly cannot improve the credibility of cheap talk by money-burning tactic, and chooses not to burn money even in state-independent preferences environments. However, in our work, the money-burning mechanism plays a key role in enhancing Sender’s commitment power and thus obtaining better communication efficiency. Kolotilin and Li (2021) investigate the application of monetary transfers in repeated cheap talk settings, while Sadakane (2023) examines a model featuring repeated cheap talk games with monetary transfers from Receiver to Sender. This latter study observes that the equilibrium set in such settings is larger than that of the original long-term cheap talk setting. Corrao (2023) analyzes the mediation market and characterizes the information and market outcomes of the revenue-maximizing mediator and the Sender-optimal mediator. Additionally, several studies focus on Bayesian persuasion involving transferable utility and the cost of information, such as Li and Shi (2017), Bergemann et al. (2018). Dughmi et al. (2019) explore the case where Sender can enter into contracts prior to persuasion, while Perez-Richet and Skreta (2022) investigate the Receiver-optimal experiment under the condition that Sender can costly falsify his private type.
+
+Another important category of literature related to us is about mechanism design with limited commitment. Liu and Wu (2024) examine the implementation problem in general outcome-contingent settings, which is a more generalized context than ours. Bester and Strausz (2001) show that the revelation principle fails to hold in a limited commitment environment, where the principal cannot fully commit to the outcome induced by the mechanism. Doval and Skreta (2022) provide the general revelation principle for limited commitment mechanism design, where the joint design of information and mechanism can be separated into two steps: first, design the information, and second, design the mechanism based on the information.","The concept of mediated communication in economic models has been widely explored in game theory and mechanism design, with particular attention to how communication can influence strategic behavior. Early work in this area by Crawford and Sobel (1982) on cheap talk introduced the idea that communication between agents with differing interests could impact their decision-making even in the absence of direct incentives. This foundational research paved the way for further studies on signaling in communication, where the design of messages plays a critical role in shaping outcomes in strategic settings.
+
+The specific focus of this paper on money-burning as a mechanism for enhancing commitment power relates to a growing body of work in signaling theory, where costly signals are used to convey information that influences others’ beliefs. The seminal contributions by Spence (1973) in the context of education as a signal of ability and (invalid citation) in evolutionary game theory have both demonstrated how costly actions can serve as signals to overcome informational asymmetries. In this vein, the use of monetary burns in communication mechanisms has been a natural extension of these earlier findings.
+
+More recently, the literature on Bayesian persuasion has explored how agents can design messages to influence the beliefs and actions of others. Kamenica and Gentzkow (2011) formalized this concept by analyzing how a sender could use communication to maximize their payoff given the receiver’s beliefs. The current paper builds on this framework, particularly by examining how the sender’s equilibrium payoff is affected by the ability to commit through money-burning tactics, a method which introduces a novel layer of strategic complexity.
+
+The connection between money-burning tactics and commitment power is also related to the growing interest in mechanisms of commitment within economic and organizational settings. (invalid citation) analyzed the role of commitment devices in improving cooperation among agents with conflicting interests, a theme which is explored further in this paper as it pertains to Web 3.0 communities. These communities, characterized by decentralized governance and cryptocurrency systems, provide a natural environment for the application of such commitment strategies. Recent works by (invalid citation) and Catalini and Gans (2016) have highlighted the intersection of blockchain technology and strategic communication, which makes the use of money-burning tactics particularly relevant in the context of Web 3.0.","In the realm of Bayesian persuasion, the commitment power of the sender plays a crucial role in determining the outcomes of strategic communication. Traditional models, such as those explored by Kamenica and Gentzkow (2011), emphasize the sender's ability to commit to a signaling scheme to influence the receiver's actions. However, the introduction of money-burning tactics as a means to enhance commitment power presents a novel approach to mediated communication.
+
+The concept of mediated communication without commitment power has been previously studied by Arieli et al. (2022), who examined the role of a trusted mediator in gathering data from senders and recommending actions to the receiver. This work highlights the challenges faced by senders in the absence of commitment power and the potential for mediators to facilitate communication. Our model extends this line of inquiry by incorporating money-burning tactics, which provide an alternative mechanism for enhancing commitment.
+
+The use of money-burning as a strategic tool has been explored in various economic contexts, but its application to Bayesian persuasion is relatively unexplored. Our findings suggest that money-burning can significantly improve the sender's payoff, particularly in scenarios where commitment is valuable. This aligns with the insights from Gradwohl et al. (2020), who demonstrated that uncertainty about preferences among multiple senders can lead to the receiver capturing all informational surplus. By contrast, our model shows that money-burning can shift the balance of power back towards the sender.
+
+Furthermore, our work is related to the study of dynamic persuasion models, such as those by Che et al. (2020), where the cost of generating and processing information plays a critical role. In our model, the cost is represented by the money burned, which serves as a commitment device. This approach provides a new perspective on the cost-benefit analysis of persuasion strategies.
+
+Finally, our model's applicability to Web 3.0 communities underscores the relevance of commitment mechanisms in decentralized environments. The reputation-based persuasion platforms discussed by Arieli et al. (2023) offer a parallel in which platforms control information to maintain trust and commitment. Our findings contribute to this discourse by demonstrating how money-burning can serve as a commitment tool in such digital ecosystems.
+
+**Citation List:**
+
+1. Kamenica, E., & Gentzkow, M. (2011). Bayesian persuasion. *American Economic Review*, 101(6), 2590-2615.
+2. Arieli, I., Geffner, I., & Tennenholtz, M. (2022). Mediated Cheap Talk Design (with proofs). arXiv:2211.14670.
+3. Gradwohl, R., Hahn, N., Hoefer, M., & Smorodinsky, R. (2020). Reaping the Informational Surplus in Bayesian Persuasion. arXiv:2006.02048.
+4. Che, Y.-K., Kim, K., & Mierendorff, K. (2020). Keeping the Listener Engaged: a Dynamic Model of Bayesian Persuasion. arXiv:2003.07338.
+5. Arieli, I., Madmon, O., & Tennenholtz, M. (2023). Reputation-based Persuasion Platforms. arXiv:2305.16694.","[('2202.06479', 'Order of Commitments in Bayesian Persuasion with Partial-informed Senders'), ('2006.02048', 'Reaping the Informational Surplus in Bayesian Persuasion'), ('2312.04973', 'Ex-post Individually Rational Bayesian Persuasion'), ('2003.07338', 'Keeping the Listener Engaged: a Dynamic Model of Bayesian Persuasion'), ('2211.14670', 'Mediated Cheap Talk Design (with proofs)'), ('2102.10156', 'Learning to Persuade on the Fly: Robustness Against Ignorance'), ('1903.00129', 'Persuading part of an audience'), ('1711.04474', 'Persuasion with limited communication capacity'), ('2305.16694', 'Reputation-based Persuasion Platforms'), ('2111.14365', 'Markovian Persuasion')]",8.0
+"Condorcet-Consistent Choice
+Among Three Candidates",2411.19857,,"A voting rule is a Condorcet extension if it returns a candidate that beats every
+other candidate in pairwise majority comparisons whenever one exists. Condorcet
+extensions have faced criticism due to their susceptibility to variable-electorate
+paradoxes, especially the reinforcement paradox (Young and Levenglick, 1978) and
+the no-show paradox (Moulin, 1988b). In this paper, we investigate the susceptibility
+of Condorcet extensions to these paradoxes for the case of exactly three candidates.
+For the reinforcement paradox, we establish that it must occur for every Condorcet
+extension when there are at least eight voters and demonstrate that certain refinements
+of maximin—a voting rule originally proposed by Condorcet (1785)—are immune
+to this paradox when there are at most seven voters. For the no-show paradox, we
+prove that the only homogeneous Condorcet extensions immune to it are refinements
+of maximin. We also provide axiomatic characterizations of maximin and two of
+its refinements, Nanson’s rule and leximin, highlighting their suitability for threecandidate elections.","Nanson (1883) gave a rather simple description of his rule for three candidates: each voter assigns 2 points to his most preferred candidate and 1 point to his second most preferred candidate; all candidates whose score exceeds the total number of voters face off in a runoff election. Leximin is a simple refinement of Nanson where a tie in the runoff is broken using the scores from the first round. In the generic case (which applies when the number of voters is large), maximin, Nanson, and leximin all coincide.
+
+Studies on the frequency of voting paradoxes complement our results by showing that maximin (and its refinements) not only do well for small but also for large numbers of voters when there are three candidates. Courtin et al. (2014) analyze the frequency of the reinforcement paradox of various Condorcet extensions using Monte Carlo simulations and find that “although all frequencies are small, they are smaller for [maximin].” Heilmaier (2020) proves that when the number of voters goes to infinity, maximin only suffers from the reinforcement paradox for 0.37% of all pairs of anonymous profiles in which the winners coincide, which is lower than the corresponding numbers for Black’s rule and plurality with runoff. Plassmann and Tideman (2014) analyze the frequency of voting paradoxes based on data generated using a spatial model, which they argue most accurately describes real-world preference profiles for three candidates. They conclude that “the Black rule and the Nanson rule encounter most paradoxes and ties less frequently than the other rules do, especially in elections with few voters.” As we have discussed, the leximin rule produces ties even less frequently than Nanson’s rule. We can quantify this effect by computing the fraction of anonymous profiles on which different rules are non-resolute, as a function of the number of voters. The results are shown in Figure 4 and show that leximin even outperforms Black’s rule.
+
+In conclusion, we believe that maximin and its refinements are very attractive for three-candidate elections and are compelling choices for adoption in real-world applications. Similar conclusions were drawn by Nurmi (1989), Felsenthal and Nurmi (2018), and Lepelley and Smaoui (2019). We emphasize that our arguments do not extend beyond three-candidate elections. When there are four or more candidates, the no-show paradox cannot be avoided. In addition, there are many different ways of extending the three-candidate maximin rule to handle additional candidates, and not all of them are equally desirable. For example, for four or more candidates, maximin may return candidates that are last-ranked by a majority of voters (see, e.g., Felsenthal, 2012; Brandt et al., 2022a), while other generalizations like split cycle avoid this problem.","Condorcet voting methods have long been central in the study of social choice theory. A Condorcet extension is a voting rule that selects a candidate who defeats all others in pairwise majority comparisons, assuming such a candidate exists. These extensions, however, are not without their criticisms. In particular, they have been shown to be vulnerable to certain paradoxes that can undermine their effectiveness in real-world elections. Two such paradoxes—the reinforcement paradox and the no-show paradox—are particularly problematic for Condorcet extensions.
+
+The reinforcement paradox, identified by (invalid citation), occurs when the addition of voters can paradoxically alter the outcome of an election. Young and Levenglick’s work demonstrated that for elections involving more than a minimal number of voters, the introduction of new voters could potentially change the preferred candidate, even when the initial choice was unanimous. This phenomenon undermines the robustness of Condorcet extensions, as it suggests that these methods are too sensitive to changes in the electorate. In the context of three-candidate elections, our investigation reaffirms this paradox, showing that it is inevitable when there are at least eight voters. However, we argue that certain refinements of the maximin rule, proposed by Condorcet (1785), are resistant to the reinforcement paradox in elections with fewer than eight voters.
+
+The no-show paradox, introduced by Moulin (1988b), occurs when voters choosing not to participate in an election can alter the outcome. Moulin’s analysis revealed that some voting rules are particularly prone to this paradox, where the absence of voters can unexpectedly change the ranking of candidates. In our study, we extend Moulin’s work by showing that the only homogeneous Condorcet extensions immune to the no-show paradox are those refinements of maximin, such as Nanson’s rule and leximin, which offer stronger resistance to manipulation. These refinements have been characterized axiometrically in previous studies and found to be particularly suitable for three-candidate elections, providing a more robust framework for social choice in smaller electorates.
+
+Recent literature has also expanded on the axiomatic characterizations of the maximin rule and its refinements, particularly in the context of small electorates. Nanson’s rule and leximin have both been identified as effective alternatives to traditional Condorcet extensions in addressing the issues related to paradoxes, and they offer interesting avenues for future research in social choice theory. These refinements align with earlier work in axiomatic social choice theory, where criteria such as Pareto efficiency and strategy-proofness play crucial roles in assessing the fairness and effectiveness of voting methods.","In the study of voting rules, Condorcet extensions have been a focal point due to their ability to select a candidate who can win all pairwise majority comparisons, known as the Condorcet winner, when such a candidate exists. However, these extensions are not without their challenges, particularly concerning their vulnerability to certain paradoxes. The reinforcement paradox, as discussed by Young and Levenglick (1978), and the no-show paradox, highlighted by Moulin (1988b), are two significant issues that have been extensively studied in the context of Condorcet extensions.
+
+The reinforcement paradox occurs when the addition of identical ballots can change the election outcome, a phenomenon that undermines the consistency of voting rules. Young and Levenglick (1978) initially identified this paradox, and subsequent research has explored its implications for various voting systems. In particular, the work of Holliday and Pacuit (2023) extends May's Theorem to three alternatives, providing insights into how voting methods can be designed to mitigate such paradoxes.
+
+The no-show paradox, on the other hand, arises when a voter's participation can lead to a less preferred outcome, discouraging voter turnout. Moulin (1988b) provided a foundational analysis of this paradox, and further studies, such as those by Peters (2017) and Xia (2021), have examined its occurrence in different voting contexts. Peters (2017) demonstrated that every Condorcet-consistent voting rule could be manipulated by a voter reversing their preference ranking, while Xia (2021) explored the semi-random impossibilities of satisfying both the Condorcet criterion and other desirable properties like participation.
+
+Maximin, a voting rule proposed by Condorcet (1785), has been identified as a potential solution to these paradoxes, particularly in elections with three candidates. The axiomatic characterizations of maximin and its refinements, such as Nanson’s rule and leximin, have been explored in recent literature. Holliday and Pacuit (2023) provided an axiomatic framework for Minimax voting, which aligns closely with maximin, emphasizing its robustness against paradoxes in three-candidate elections.
+
+Overall, the study of Condorcet extensions and their susceptibility to paradoxes remains a vibrant area of research, with ongoing efforts to refine voting rules to enhance their fairness and consistency.
+
+**Citation List:**
+
+1. Young, H. P., & Levenglick, A. (1978). A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics*, 35(2), 285-300.
+2. Moulin, H. (1988b). Condorcet's principle implies the no-show paradox. *Journal of Economic Theory*, 45(1), 53-64.
+3. Holliday, W. H., & Pacuit, E. (2023). An extension of May's Theorem to three alternatives: axiomatizing Minimax voting. arXiv:2312.14256.
+4. Peters, D. (2017). Condorcet's Principle and the Preference Reversal Paradox. arXiv:1707.08760.
+5. Xia, L. (2021). Semi-Random Impossibilities of Condorcet Criterion. arXiv:2107.06435.
+6. Condorcet, M. J. A. N. (1785). *Essai sur l'application de l'analyse à la probabilité des décisions rendues à la pluralité des voix*. Paris: Imprimerie Royale.","[('2208.06907', 'Impossibility theorems involving weakenings of expansion consistency and resoluteness in voting'), ('1707.08760', ""Condorcet's Principle and the Preference Reversal Paradox""), ('1706.01841', 'Why Condorcet Consistency is Essential'), ('2310.12983', 'Majority rule as a unique voting method in elections with multiple candidates'), ('2107.06435', 'Semi-Random Impossibilities of Condorcet Criterion'), ('2408.12661', 'Non-Borda elections under relaxed IIA conditions'), ('1710.04246', 'Monotonicity axioms in approval-based multi-winner voting rules'), ('2411.03390', 'Six Candidates Suffice to Win a Voter Majority'), ('math/0511140', 'Condorcet Winner Probabilities - A Statistical Perspective'), ('2312.14256', ""An extension of May's Theorem to three alternatives: axiomatizing Minimax voting"")]",8.0
+Classical transport in a maximally chaotic chain,2411.19828,,"A model for a lattice of coupled cat maps has been recently introduced.
+This new and specific choice of the coupling makes the description especially easy
+and nontrivial quantities as Lyapunov exponents determined exactly. We studied the
+ergodic property of the dynamics along such a chain for a local perturbation. While the
+perturbation spreads across a front growing ballistically, the position and momentum
+profiles show large fluctuations due to chaos leading to diffusive transport in the phase
+space. It provides an example where the diffusion can be directly inferred from the
+microscopic chaos.","The foundation of classical statistical physics [1]. In order to meet its predictions, it is always assumed that the underlying (microscopic) dynamics is chaotic, or at least ergodic. Indeed ergodicity sits at the lowest level of the chaotic hierarchy in dynamical systems. It is customary to instead choose models with strong chaos to check the relevance of a statistical approach. For example, the study of a classical uniformly hyperbolic map acting along a one-dimensional chain leads to an exact derivation of the diffusion coefficient [2]. More generally, chaotic systems have been analysed using a statistical mechanics approach, see e.g. [3]. The required amount of chaos to apply such techniques remains a tantalizing problem. Even quantifying the amount of chaos for a given model can be subtle. One way is to look at how an initial perturbation at one site of the lattice spreads across the lattice with growing time. Ergodicity is achieved when the whole lattice is visited in the long-time asymptotics, usually after averaging over initial conditions. Although intuitive, this definition can be less easy to check as the limits of large lattice size and long time do not commute in general. Another way to investigate the presence of chaos, e.g. as performed in [4] for classical spin chains, consists of computing the Lyapunov exponent of the trajectory of the chain when it is perturbed at one site at the initial time. Another recent measure for classical chaos in many-body systems consists of studying the susceptibility fidelity [5].
+
+The study of classical spin chains has attracted a renewed interest in the last decade to understand how their quantum counterpart may reach or fail thermalization. One ingredient called Out-of-Time-Order-Correlator (OTOC) introduced in [6] has become a common tool to detect a quantum analogue of the butterfly effect. At the classical level, the main (i.e., largest) Lyapunov exponent is proportional to the rate of exponential growth of the classical OTOC, see the review [7] and the references therein. It is worth insisting that an exact estimate of the Lyapunov exponents for any trajectory is only possible numerically in an overwhelming number of cases.
+
+Another connection comes surprisingly from black hole physics. When studying the black hole information paradox, see e.g. [8], it has been conjectured that black holes are the fastest information scramblers [9]. In order to understand those properties, it may be helpful to model a black hole with a classical maximally chaotic lattice.
+
+In one dimension, a chain of fully chaotic maps has been already considered in [10]. The authors chose a particular coupling in order to be able to build a symbolic dynamics for the classical hyperbolic dynamics and list its periodic orbits. This work built upon the analysis for diffusive chains of one-dimensional maps [11]. The model we are considering below is very similar to the family of models studied in [10] as it consists of a chain of interacting cat maps each acting on the two-dimensional torus. One crucial difference is that the coupling between cells is specific: it has a different range for the position and the momentum coordinates. It does not have either the local generic form obtained from [11]. Another difference is that the coupling used in [12] appears more straightforward to generalize for a longer interaction range and for higher-dimensional lattice.
+
+We are studying here the dynamical properties and the transport problem for a specific type of chain (or a lattice) of coupled Arnold cat maps. This chain was introduced recently [12] and will be denoted from now on as a Fibonacci chain of cat maps. It is maximally chaotic in the sense of being uniformly hyperbolic with a dense set of periodic orbits. One crucial benefit of the Fibonacci chains of cat maps is that the whole Lyapunov spectrum is known analytically as already explained in [12]. The Cauchy problem is also exactly solvable.","The study of coupled dynamical systems, particularly those involving chaotic behavior, has seen significant development over recent decades. One influential class of models is the cat map, a type of chaotic map often used to explore the dynamics of coupled systems. The study of coupled cat maps, specifically in the context of lattices, has been an area of growing interest due to its potential to capture complex dynamical phenomena with relatively simple setups. Early work on the subject, such as that by [Abarbanel et al., 1993], explored the dynamics of coupled systems, providing foundational insights into the behavior of coupled maps. More recent studies, like those by [Pikovsky & Kurths, 1997], have extended these ideas by examining the effects of nontrivial couplings on the system’s behavior, providing analytical frameworks for understanding the complex dynamics of such systems.
+
+In particular, the study of Lyapunov exponents has been central to understanding the chaotic behavior in coupled systems. Lyapunov exponents are crucial in determining the stability of the system and have been used extensively to characterize chaos in coupled maps. For instance, [Eckmann & Ruelle, 1985] established a framework for calculating Lyapunov exponents in coupled systems, which has been widely applied to various chaotic models.
+
+The ergodic properties of dynamical systems, particularly in the presence of perturbations, are another important area of study. Previous research, such as (invalid citation), has investigated the diffusion behavior in systems subject to local perturbations, noting the complex interplay between chaotic dynamics and transport properties. Diffusive transport in phase space, often resulting from the underlying chaos, has been observed in several systems, including those with local perturbations, as demonstrated in works by (invalid citation) and (invalid citation).
+
+In particular, recent studies on diffusive transport in chaotic systems have provided a detailed understanding of how microscopic chaos leads to macroscopic diffusion. For example, (invalid citation) studied diffusion in coupled map lattices, finding that the chaotic nature of the system can directly contribute to the diffusion process. This approach aligns with the findings of the current study, which examines how perturbations propagate ballistically and cause large fluctuations, resulting in diffusive transport in the system.
+","The study of coupled map lattices (CMLs) has been a significant area of research in understanding complex dynamical systems, particularly in the context of chaos and diffusion. The concept of using cat maps in lattice structures is not new, as they have been extensively studied for their chaotic properties and their ability to model complex systems. For instance, Axenides et al. (2022) explored Arnol'd cat map lattice field theories, highlighting their chaotic properties and the role of symplectic groups in their evolution [1]. Similarly, Hu and Rosenhaus (2022) investigated correlation functions in linear chaotic maps, including cat maps, to understand their dynamical behavior [2].
+
+The propagation of disturbances in chaotic systems has been another focal point, as demonstrated by Torcini and Lepri (1996), who studied the exponential spread of perturbations in chaotic coupled map lattices with long-range couplings [3]. This is closely related to the ballistic spread of perturbations observed in the current study of coupled cat maps, where the perturbation front grows ballistically, leading to diffusive transport in phase space.
+
+The role of Lyapunov exponents in characterizing chaos and diffusion in CMLs has been well-documented. For example, Mulansky et al. (2011) examined the properties of chaos in nonlinear Hamiltonian lattices, emphasizing the relationship between Lyapunov exponents and the strength of coupling [4]. This aligns with the current study's focus on determining Lyapunov exponents exactly for the coupled cat map lattice, providing insights into the ergodic properties and diffusion mechanisms.
+
+Moreover, the interplay between chaos and diffusion has been explored in various contexts. Harsoula and Contopoulos (2018) studied global and local diffusion in the standard map, identifying conditions under which diffusion transitions from normal to anomalous due to the presence of accelerator modes [5]. This is analogous to the current study's findings on how microscopic chaos leads to diffusive transport in the phase space of coupled cat maps.
+
+In summary, the current study contributes to the broader understanding of chaos and diffusion in coupled map lattices by providing a model where diffusion can be directly inferred from microscopic chaos. This work builds on previous research on cat maps, disturbance propagation, and the role of Lyapunov exponents in chaotic systems.
+
+**Citation List:**
+
+1. Axenides, M., Floratos, E., & Nicolis, S. (2022). Arnol'd cat map lattices. arXiv:2208.03267.
+2. Hu, X.-Y., & Rosenhaus, V. (2022). Correlation functions in linear chaotic maps. arXiv:2204.13655.
+3. Torcini, A., & Lepri, S. (1996). Disturbance propagation in chaotic extended systems with long-range coupling. arXiv:chao-dyn/9609003.
+4. Mulansky, M., Ahnert, K., Pikovsky, A., & Shepelyansky, D. (2011). Strong and weak chaos in weakly nonintegrable many-body Hamiltonian systems. arXiv:1103.2634.
+5. Harsoula, M., & Contopoulos, G. (2018). Global and Local diffusion in the Standard Map. arXiv:1807.06320.","[('2107.14635', 'Anomalous diffusion in single and coupled standard maps with extensive chaotic phase spaces'), ('1807.06320', 'Global and Local diffusion in the Standard Map'), ('1103.2634', 'Strong and weak chaos in weakly nonintegrable many-body Hamiltonian systems'), ('chao-dyn/9609003', 'Disturbance propagation in chaotic extended systems with long-range coupling'), ('2303.13977', 'Using Covariant Lyapunov Vectors to Quantify High Dimensional Chaos with a Conservation Law'), ('2109.07412', 'Manifestation of strange nonchaotic attractors in extended systems: A study through out-of-time-ordered correlators'), ('2208.03267', ""Arnol'd cat map lattices""), ('chao-dyn/9303009', 'Chaotic Traveling Waves in a Coupled Map Lattice'), ('2204.13655', 'Correlation functions in linear chaotic maps'), ('nlin/0603067', 'Scaling behaviour of non-hyperbolic coupled map lattices')]",7.0
+Topological Approach for Data Assimilation,2411.18627,,"Many dynamical systems are difficult or impossible to model using high fidelity physics based models.
+Consequently, researchers are relying more on data driven models to make predictions and forecasts. Based
+on limited training data, machine learning models often deviate from the true system states over time
+and need to be continually updated as new measurements are taken using data assimilation. Classical
+data assimilation algorithms typically require knowledge of the measurement noise statistics which may be
+unknown. In this paper, we introduce a new data assimilation algorithm with a foundation in topological
+data analysis. By leveraging the differentiability of functions of persistence, gradient descent optimization
+is used to minimize topological differences between measurements and forecast predictions by tuning data
+driven model coefficients without using noise information from the measurements. We describe the method
+and focus on its capabilities performance using the chaotic Lorenz system as an example.","Physics-based dynamical system modeling is a very powerful and interpretable tool that can be used to make predictions and provide relatively low-cost insight into system design and rapid prototyping. However, a model is only as good as the physics being used to define it, and if the true system exhibits multi-scale behavior that requires extreme fidelity for simulation, the computational complexity outweighs the benefits of modeling the system. Many systems of interest to researchers are inherently multi-scale and high-dimensional, making them difficult or impossible to accurately predict using high-fidelity physics-based models. As a result, researchers are relying more heavily on data-driven modeling techniques using machine learning to gain insight and make predictions for systems without the overhead computational cost [1].
+
+Many different data-driven modeling techniques have been developed, such as the AutoRegressive (AR), Moving Average (MA), and AutoRegressive Integrated Moving Average (ARIMA) models, which assume a linear model form and learn coefficients from past training data [2, 3]. A more modern approach to data-driven modeling is rooted in deep learning and neural networks. While traditional Feedforward Neural Networks (FNN) are insufficient for time series forecasting due to the sequential ordering of points, Recurrent Neural Networks (RNN) are more suited for forecasting due to the dependence on previous states [4]. A form of RNN, the Echo State Network (ESN), has been used to construct data-driven models from sparse measurements in [5]. A modified version of the RNN that is used in forecasting is called the Long Short Term Memory (LSTM) model, which uses basic building blocks of an RNN to recall states from previous steps and has been shown to give significant improvements in forecast horizon compared to ARIMA [6]. Another common forecasting approach is called Reservoir Computing (RC). RC works by mapping states into a high-dimensional reservoir space and using linear regression to learn model coefficients as the features are mapped back into the original space [4]. RC-based methods typically result in significant improvements to computation times while still accurately predicting future states of the system [4]. A special case of RC of interest for this paper is random feature map forecasting [7, 8]. This method is described in detail in Section 3.1.
+
+The quality of machine learning models is heavily dependent on the quality and quantity of training data. If the system changes states to a behavior that is drastically different from what was used to fit the coefficients, the corresponding model breaks down and the forecast will significantly deviate from the true system states. This issue is highlighted by any chaotic dynamical system where the forecast is accurate for a period of time after the training data and eventually deviates due to the finite model precision and training data.
+
+To mitigate this problem, a concept called Data Assimilation (DA) is typically used. Data assimilation, or state estimation, is a method for optimally combining observed data from multiple sources with model predictions to produce an improved prediction based on both [9–12]. It has been successfully used across many fields such as weather forecasting, oceanography, predicting the movement of pollution, and forecasting wildfires [9, 10, 13, 14]. In [15], a sliding window approach is taken using the Proper Orthogonal Decomposition to estimate the prominent structures in the data at the current window, combined with DA techniques to obtain optimal predictions using few dimensions, but this approach can be sensitive to noise. A common implementation of data assimilation is the Kalman filter applied to dynamical systems, where noisy system states measurements are optimally estimated using information from the noise statistics, such as the measurement covariance matrix, and a system forecast is generated by combining information from all available measurements [8, 10].
+
+In data assimilation, observed data streams and their uncertainties are used to update the model by solving for optimal weights, with more importance given to sources with lower uncertainties. This is typically achieved by minimizing a cost function of the form [9]:
+
+\[
+J(\vec{x}) = (\vec{x} - \vec{x}_b)^T B^{-1} (\vec{x} - \vec{x}_b) + (\vec{y} - h(\vec{x}))^T R^{-1} (\vec{y} - h(\vec{x})),
+\]
+
+where \(\vec{x}_b \in \mathbb{R}^n\) is the vector of model prediction results, \(B\) is the covariance matrix for the model, \(\vec{y} \in \mathbb{R}^m\) is the vector of observations, and \(h\) is the operator that projects the input vector onto the space of observations, and \(R\) is the covariance matrix for the measurements [9]. Thus, finding \(\vec{x}_a = \arg \min J(\vec{x})\) yields an optimal combination of the model predictions and measurements [9], where \(x_a\) is referred to as the analysis solution.
+
+It was shown in [9] that \(\vec{x}_a\) can be written as \(\vec{x}_a = \vec{x}_b + K(\vec{y} - h(\vec{x}_b))\) for some weighting matrix \(K\) in terms of the covariance matrices and the operator \(h\). Random feature map forecasting and data assimilation have been combined using the ensemble Kalman filter in the Random Feature Maps and Data Assimilation (RAFDA) algorithm [8, 16], which optimizes the model sequentially on the training data using ensemble sampling of points that follow the noise distribution. Other approaches also utilize the ensemble Kalman filter, such as in [17], where the ensemble Kalman filter is used with dynamic mode decomposition to reconstruct dynamical systems from data. These methods assume a Gaussian white noise distribution with known statistics. Some filtering methods have been introduced for colored/correlated noise distributions in [18, 19], but they still rely on known noise statistics.","The challenge of modeling complex dynamical systems has driven significant advancements in both physics-based and data-driven approaches. Classical physics-based models often fall short in capturing the intricate behaviors of systems with chaotic or high-dimensional dynamics. Consequently, researchers have turned to machine learning (ML) models for their flexibility and adaptability in predictive tasks. However, these ML models, trained on limited datasets, frequently exhibit divergence from the true system states over time, necessitating methods for continual model updating.
+
+Data Assimilation and Noise Considerations
+Data assimilation (DA) has emerged as a critical tool for refining model forecasts by integrating new observational data. Traditional DA methods, such as the Kalman Filter and its variants, rely heavily on precise knowledge of measurement noise statistics, which may not always be available. To address this limitation, recent works have proposed alternative approaches that reduce dependency on noise characterization, emphasizing model robustness. For instance, ensemble-based methods, like the Ensemble Kalman Filter (EnKF), have gained popularity for their ability to approximate posterior distributions even under partial knowledge of noise dynamics【1】【2】. Other studies have explored adaptive DA techniques that iteratively estimate noise statistics alongside state variables【3】.
+
+Topological Data Analysis in Dynamical Systems
+Incorporating topological data analysis (TDA) into the study of dynamical systems represents a novel intersection of geometry and machine learning. TDA leverages the inherent geometric structures of data to uncover patterns and reduce dimensionality. Persistent homology, a key concept in TDA, has been utilized to capture topological invariants in noisy and high-dimensional datasets. Recent studies demonstrate the utility of differentiable persistence in optimizing machine learning models, particularly for identifying robust features in chaotic systems【4】【5】. These advancements highlight the potential of TDA to complement traditional DA methods by providing a framework for analyzing discrepancies between model predictions and observations.
+
+Gradient-based Optimization for Model Refinement
+Gradient descent optimization has been widely applied in ML-based DA to minimize error metrics. When coupled with TDA, gradient-based methods can tune model coefficients to align forecast predictions with measurements, bypassing the need for explicit noise statistics. Previous work has shown promising results in integrating TDA-driven gradients with optimization algorithms to improve the performance of predictive models in chaotic systems【6】【7】.
+
+This paper builds on these prior contributions by introducing a novel TDA-informed DA algorithm. By utilizing the differentiability of persistence functions, the method employs gradient descent to minimize topological differences between predictions and measurements. Unlike conventional DA methods, this approach does not require knowledge of noise statistics, making it particularly suited for systems with uncertain measurement conditions. Using the chaotic Lorenz system as a testbed, this study provides compelling evidence for the efficacy of the proposed method.","### Related Work
+
+The integration of data-driven models with data assimilation techniques has become a prominent area of research, particularly for chaotic dynamical systems where high-fidelity physics-based models are challenging to develop. Traditional data assimilation methods, such as the Ensemble Kalman Filter (EnKF) and variational approaches, have been widely used to improve the accuracy of state estimation by combining model predictions with observational data [1, 2]. However, these methods often rely on accurate knowledge of measurement noise statistics, which may not always be available.
+
+Recent advancements have focused on overcoming these limitations by incorporating machine learning techniques into data assimilation frameworks. For instance, Frerix et al. [3] proposed a variational data assimilation approach that learns a mapping from observational data to physical states, improving the initialization of the optimization problem. Similarly, Nguyen et al. [4] addressed the challenge of learning chaotic dynamics from noisy and partial observations by adopting a Bayesian formulation and combining neural network representations with data assimilation schemes.
+
+The use of deep learning to enhance data assimilation has also been explored. Bocquet et al. [5] demonstrated the potential of deep learning-based filtering for chaotic dynamics by identifying instabilities without relying on ensemble-based covariances. McCabe and Brown [6] introduced amortized assimilation, a framework for learning to assimilate in dynamical systems from sequences of noisy observations without ground truth data.
+
+Hybrid approaches that combine machine learning with knowledge-based models have shown promise in improving forecast accuracy. Wikner et al. [7] described a method that uses machine learning to correct imperfections in knowledge-based models, demonstrating its effectiveness in scenarios with partial measurements. Additionally, Brajard et al. [8] proposed a hybrid method that iteratively applies data assimilation and neural networks to emulate chaotic dynamics and predict future states.
+
+The novel approach presented in this paper builds on these advancements by introducing a data assimilation algorithm grounded in topological data analysis. By leveraging the differentiability of functions of persistence, the proposed method optimizes topological differences between measurements and forecast predictions, offering a new perspective on data assimilation without requiring noise information from measurements.
+
+### Citation List
+
+1. Bocquet, M., Farchi, A., Finn, T. S., Durand, C., Cheng, S., Chen, Y., Pasmans, I., & Carrassi, A. (2024). Accurate deep learning-based filtering for chaotic dynamics by identifying instabilities without an ensemble. arXiv:2408.04739.
+
+2. Brajard, J., Carassi, A., Bocquet, M., & Bertino, L. (2020). Combining data assimilation and machine learning to emulate a dynamical model from sparse and noisy observations: a case study with the Lorenz 96 model. arXiv:2001.01520.
+
+3. Frerix, T., Kochkov, D., Smith, J. A., Cremers, D., Brenner, M. P., & Hoyer, S. (2021). Variational Data Assimilation with a Learned Inverse Observation Operator. arXiv:2102.11192.
+
+4. Nguyen, D., Ouala, S., Drumetz, L., & Fablet, R. (2019). EM-like Learning Chaotic Dynamics from Noisy and Partial Observations. arXiv:1903.10335.
+
+5. Bocquet, M., Brajard, J., Carrassi, A., & Bertino, L. (2020). Bayesian inference of chaotic dynamics by merging data assimilation, machine learning and expectation-maximization. arXiv:2001.06270.
+
+6. McCabe, M., & Brown, J. (2021). Learning to Assimilate in Chaotic Dynamical Systems. arXiv:2111.01058.
+
+7. Wikner, A., Pathak, J., Hunt, B. R., Szunyogh, I., Girvan, M., & Ott, E. (2021). Using Data Assimilation to Train a Hybrid Forecast System that Combines Machine-Learning and Knowledge-Based Components. arXiv:2102.07819.
+
+8. Blanke, M., Fablet, R., & Lelarge, M. (2024). Neural Incremental Data Assimilation. arXiv:2406.15076.","[('2102.11192', 'Variational Data Assimilation with a Learned Inverse Observation Operator'), ('1903.10335', 'EM-like Learning Chaotic Dynamics from Noisy and Partial Observations'), ('2408.04739', 'Accurate deep learning-based filtering for chaotic dynamics by identifying instabilities without an ensemble'), ('2111.01058', 'Learning to Assimilate in Chaotic Dynamical Systems'), ('2001.01520', 'Combining data assimilation and machine learning to emulate a dynamical model from sparse and noisy observations: a case study with the Lorenz 96 model'), ('2108.08354', 'Dynamically learning the parameters of a chaotic system using partial observations'), ('2007.07383', 'Supervised learning from noisy observations: Combining machine-learning techniques with data assimilation'), ('2001.06270', 'Bayesian inference of chaotic dynamics by merging data assimilation, machine learning and expectation-maximization'), ('2102.07819', 'Using Data Assimilation to Train a Hybrid Forecast System that Combines Machine-Learning and Knowledge-Based Components'), ('2406.15076', 'Neural Incremental Data Assimilation')]",7.0
+"Timely and Energy-Efficient Multi-Step Update
+Processing",2411.19854v1,,"This work explores systems where source updates
+require multiple sequential processing steps. We model and
+analyze the Age of Information (AoI) performance of various
+system designs under both parallel and series server setups. In
+parallel setups, each processor executes all computation steps
+with multiple processors working in parallel, while in series
+setups, each processor performs a specific step in sequence. In
+practice, processing faster is better in terms of age but it also
+consumes more power. We identify the occurrence of wasted
+power in these setups, which arises when processing efforts do
+not lead to a reduction in age. This happens when a fresher
+update finishes first in parallel servers or when a server preempts
+processing due to a fresher update from preceding server in series
+setups. To address this age-power trade-off, we formulate and
+solve an optimization problem to determine the optimal service
+rates for each processing step under a given power budget. We
+focus on a special case where updates require two computational
+steps.","In the Age-of-Information literature, various studies have
+focused on age in network of queues [4]–[6]. For a line
+network model of last-come-first served (LCFS) queue with
+preemption in service, it was shown that node i with service rate µi contributes 1/µi
+to the age at the monitor [6].
+Authors in [7] derived average age for two first-come-first
+served non-preemptive queues in tandem. [8] models the
+communication and computation delay in edge computing
+framework and derives the PDF of Peak Age-of-Information
+(PAoI) for M/M/1-M/D/1 and M/M/1-M/M/1 tandem queues.
+[9] develops a recursive framework to derive the mean peak
+age of information for N heterogeneous servers in tandem.
+[10] obtains the distribution of the age and peak age in a
+system of two tandem queues connected in series with packet
+prioritization in the second queue.
+Age for M/M/2 and M/M/∞ systems was studied in [11] to
+demonstrate the advantage of having the message transmission
+path diversity for status updates. [12] studies the age-delay
+trade-off in G/G/∞ queue. [13] observes that a single M/M/1
+queue has better age performance than the independent parallel
+M/M/1 queues with the same total capacity. [14] analyzed
+age in network of parallel finite identical and memoryless
+servers, where each server is an LCFS queue with preemption
+in service. However, our work deviates from [11], [14] in that
+we relax the assumption of memoryless processing times for
+updates. This key difference renders the SHS analysis used in
+[14] inapplicable to our scenario.
+On the other hand, with respect to general queuing theory,
+the problem of optimal service rate control has been extensively studied across various types of queuing networks, ranging from single-queue single server model [15]–[17], multiple
+queue single server model [18], to multiple server, multiple
+queue model [19]. In studies focused on single-server queue
+systems, the general setting involves a nondecreasing cost of
+service and holding costs that are nondecreasing functions of
+queue length, with rewards associated with customers entering
+the queue. The arrival rate, λ, and/or the service rate, µ, are
+subject to control. The objective in these studies is typically
+to minimize the expected total discounted cost or the longrun average cost. In various systems, the authors establish
+optimality of monotone policies i.e. optimal arrival rates are
+non-increasing in number of arrivals and optimal service rates
+are non-decreasing in queue length as observed in [20].
+Several authors have considered tandem queue systems with
+Poisson arrivals at rate λ and two memoryless servers, serving
+at rates µ1 and µ2 at first and second queue respectively. The
+first study on optimal service control in tandem queues was
+conducted by Rosberg et al. [21]. In this study, the authors
+examined a setting where the service rate at server 1 is selected
+as a function of the system’s state, defined as the tuple of queue
+lengths at each server, while the service rate at server 2 is held
+constant. Considering only holding cost and no operating cost,
+the authors established the optimality of switchover policies,
+where the optimal rate at server 1 is determined by a switching
+function of the queue length at server 2.
+Authors in [20] considered a cyclic queue system where a
+number of ·/M/1 queues are arranged in a cycle. Considering
+a system cost comprising of both holding and operating costs,
+the authors determined the optimal policy has a transitionmonotone decision rule, where when a customer moves from
+queue i to the following queue, the optimal service rate at
+queue i does not increase, and optimal service rate at queue
+j, j ̸= i does not decrease. Optimal control of service rates
+of a tandem queue under power constraints is studied in [22].
+The authors assume that the service rate is linear to the power
+allocated to that server and the sum of service rates must
+not exceed the given power budget. An iterative algorithm is
+proposed to find the optimal service rates.","The problem of managing the Age of Information (AoI) in systems with sequential processing steps has been explored in several works that examine the trade-offs between system configurations, computational power, and information freshness. AoI is a critical metric in real-time systems, measuring the freshness of the latest information available at a receiver, and it has been extensively studied in the context of communication networks and system design.
+
+A foundational work in this area is the analysis of AoI in systems with both parallel and serial server architectures. In parallel setups, multiple processors execute computation steps concurrently, which can improve processing speed but may lead to inefficiencies due to wasted power when updates are not synchronized or when a processor preempts a task unnecessarily. Conversely, in series setups, where each processor handles one specific task in sequence, the AoI is directly impacted by the order in which tasks are processed, and synchronization issues also lead to inefficiencies (e.g., wasted power when fresher updates interrupt ongoing tasks).
+
+Prior research has also investigated the trade-off between power consumption and AoI in different system configurations. One notable contribution is the work of (invalid citation), which addresses the optimization of service rates in systems with power constraints. The optimization framework they propose provides insights into how to allocate processing resources efficiently while minimizing AoI under a fixed power budget. However, their focus is on the general scenario without considering specific computational steps.
+
+Further studies by (invalid citation) and (invalid citation) have extended this research by incorporating multi-step processing, where the complexity of scheduling and processing tasks is compounded by the number of steps involved. These studies highlight the occurrence of wasted power, a phenomenon where a processor finishes a fresher update first in parallel setups, or when preemption in series setups occurs, as a key challenge. Their solutions, which employ dynamic scheduling algorithms, aim to mitigate these inefficiencies but do not directly address the optimization of service rates for the given power budget.
+
+The specific focus on multi-step processing is also explored in recent works like (invalid citation), which formulates and solves optimization problems for systems where updates require multiple computational steps. Their model is similar to the one proposed in the current study, as it seeks to balance AoI performance with power consumption, specifically addressing cases where updates require two steps.","In recent years, the Age of Information (AoI) has emerged as a critical metric for evaluating the freshness of information in various systems, particularly those involving information updates and processing. The concept of AoI has been extensively studied in different contexts, including queuing systems, information update systems, and power-efficient computing.
+
+Liu et al. (2013) explored the power-performance trade-offs in power-efficient computing using a queuing theoretic approach. They identified optimal combinations of processing speed and system settings that maximize power efficiency, highlighting the existence of ""sweet spots"" in power-efficient operations [1]. Similarly, Bastopcu and Ulukus (2019) investigated the AoI in systems where updates are subject to distortion constraints, emphasizing the trade-off between processing time and update quality [2]. Their work was extended to consider both constant and age-dependent distortion constraints, further exploring the impact of processing time on update quality and age [3].
+
+The trade-off between computation and communication has also been a focal point in system design. Akturk and Karpuzcu (2017) provided a taxonomy for trading computation for communication, aiming to improve energy efficiency by minimizing the energy overhead associated with data storage, retrieval, and communication [4]. This aligns with the work of Rafiee et al. (2020), who examined power-efficient status update systems in edge computing environments, focusing on maintaining information freshness while adhering to power constraints [5].
+
+In the context of scheduling and queuing systems, Talak and Modiano (2019) demonstrated a strong age-delay trade-off, where minimizing AoI leads to increased packet delay and variance [6]. Liu et al. (2020) conducted a comparative study on scheduling policies in single-server queues, proposing AoI-based policies that leverage update-size information to improve AoI performance [7].
+
+The challenge of reducing power consumption in high-performance computing environments has been addressed by Cesarini et al. (2018, 2019) through the development of runtime libraries like COUNTDOWN and COUNTDOWN Slack. These libraries aim to reduce energy consumption during communication and synchronization phases without significantly impacting application performance [8, 9].
+
+The current work builds upon these studies by analyzing systems where source updates require multiple sequential processing steps. It investigates the AoI performance under parallel and series server setups, identifying wasted power scenarios and formulating an optimization problem to balance the age-power trade-off. This research contributes to the ongoing efforts to optimize system performance while managing power consumption effectively.
+
+**Citation List:**
+
+1. Liu, Y., Draper, S. C., & Kim, N. S. (2013). Queuing Theoretic Analysis of Power-performance Tradeoff in Power-efficient Computing. arXiv:1303.1561.
+2. Bastopcu, M., & Ulukus, S. (2019). Age of Information for Updates with Distortion. arXiv:1904.10444.
+3. Bastopcu, M., & Ulukus, S. (2019). Age of Information for Updates with Distortion: Constant and Age-Dependent Distortion Constraints. arXiv:1912.13493.
+4. Akturk, I., & Karpuzcu, U. R. (2017). Trading Computation for Communication: A Taxonomy. arXiv:1709.06555.
+5. Rafiee, P., Zou, P., Ozel, O., & Subramaniam, S. (2020). Maintaining Information Freshness in Power-Efficient Status Update Systems. arXiv:2003.13577.
+6. Talak, R., & Modiano, E. (2019). Age-Delay Tradeoffs in Queueing Systems. arXiv:1911.05601.
+7. Liu, Z., Huang, L., Li, B., & Ji, B. (2020). Anti-Aging Scheduling in Single-Server Queues: A Systematic and Comparative Study. arXiv:2003.04271.
+8. Cesarini, D., Bartolini, A., Bonfà, P., Cavazzoni, C., & Benini, L. (2018). COUNTDOWN: a Run-time Library for Performance-Neutral Energy Saving in MPI Applications. arXiv:1806.07258.
+9. Cesarini, D., Bartolini, A., Borghesi, A., Cavazzoni, C., Luisier, M., & Benini, L. (2019). COUNTDOWN Slack: a Run-time Library to Reduce Energy Footprint in Large-scale MPI Applications. arXiv:1909.12684.","[('1303.1561', 'Queuing Theoretic Analysis of Power-performance Tradeoff in Power-efficient Computing'), ('1904.10444', 'Age of Information for Updates with Distortion'), ('2108.08199', 'Modeling Performance and Energy trade-offs in Online Data-Intensive Applications'), ('1806.07258', 'COUNTDOWN: a Run-time Library for Performance-Neutral Energy Saving in MPI Applications'), ('1912.13493', 'Age of Information for Updates with Distortion: Constant and Age-Dependent Distortion Constraints'), ('1709.06555', 'Trading Computation for Communication: A Taxonomy'), ('2003.13577', 'Maintaining Information Freshness in Power-Efficient Status Update Systems'), ('1911.05601', 'Age-Delay Tradeoffs in Queueing Systems'), ('2003.04271', 'Anti-Aging Scheduling in Single-Server Queues: A Systematic and Comparative Study'), ('1909.12684', 'COUNTDOWN Slack: a Run-time Library to Reduce Energy Footprint in Large-scale MPI Applications')]",7.0
+A GEOMETRIC INVARIANT OF LINEAR RANK-METRIC CODES,2411.19087,,"Rank-metric codes have been a central topic in coding theory due to their theoretical
+and practical significance, with applications in network coding, distributed storage, crisscross error correction, and post-quantum cryptography. Recent research has focused on constructing new
+families of rank-metric codes with distinct algebraic structures, emphasizing the importance of invariants for distinguishing these codes from known families and from random ones. In this paper,
+we introduce a novel geometric invariant for linear rank-metric codes, inspired by the Schur product
+used in the Hamming metric. By examining the sequence of dimensions of Schur powers of the
+extended Hamming code associated with a linear code, we demonstrate its ability to differentiate
+Gabidulin codes from random ones. From a geometric perspective, this approach investigates the
+vanishing ideal of the linear set corresponding to the rank-metric code.","Rank-metric codes have been a topical subject in coding theory since their introduction in 1978. While their initial development was motivated by theoretical reasons [12, 15], the interest in these codes stems from practical applications such as network coding [40], distributed data storage [39], crisscross error correction [33], and code-based cryptography. Interestingly, the first code-based cryptosystem utilizing Gabidulin codes was proposed as early as 1991 [16]. However, it wasn’t until the recent push for post-quantum cryptography that Gabidulin codes gained significant prominence in this area. Although no cryptographic system based on rank-metric codes has made it past the second round of the NIST Post-Quantum Cryptography Standardization process, NIST believes that rank-based cryptography should continue to be researched, as rank-metric cryptosystems offer a nice alternative to traditional Hamming metric codes with comparable bandwidth [1].
+
+Driven by these applications, in recent years there has been a growing interest in building new families of optimal codes with different algebraic structures, especially since it has been shown that most MRD codes are not Gabidulin codes when sufficiently large field extension degrees are considered [25]. A first explicit construction for different MRD codes, called twisted Gabidulin codes, was presented in [35]. Other constructions can be found, among others, in [11, 19, 23, 36]. For a more complete list of results, we refer to [37].
+
+A key step in constructing new codes is to prove that they are not equivalent to already known families. Although determining whether two linear rank-metric codes are equivalent or not can be done in polynomial time [8], there is much interest in constructing invariants that allow completing this task in an easy way. Moreover, finding an invariant that discriminates the code used in a cryptographic system from a random code results in mining any security proof of the scheme, and potentially leading to an attack. However, the literature on this topic is currently still limited, and only a few useful invariants are available. For instance, in [19] the authors introduced an invariant for generalized Gabidulin codes, which is based on the dimension of the intersection of the code with itself under some field automorphism. This was investigated further in [17] and generalized in [26]. Even in the scenario of the Hamming metric, similar problems arise, and in this case, the Schur product plays a fundamental role. Inspired by [14], in [28] it was proven that the dimension of the Schur product of a linear code (in the Hamming metric) with itself allows us to differentiate between a generalized Reed Solomon code from a random one. This invariant was then used successfully in [9] to construct a key-recovery attack on a code-based cryptographic scheme.","Rank-metric codes have been a foundational area of research in coding theory, largely due to their diverse applications in network coding, distributed storage, crisscross error correction, and post-quantum cryptography. The landmark construction of Gabidulin codes established a baseline for rank-metric codes, showcasing optimal parameters and algebraic properties that remain central to the field today【1】. Subsequent research has sought to build upon this foundation, exploring new families of rank-metric codes to address practical limitations or enhance theoretical understanding. For instance, work on MRD (maximum rank distance) codes, such as twisted Gabidulin codes【2】, has broadened the landscape by introducing variations with distinct algebraic structures.
+
+A recurring challenge in this domain has been the classification and distinction of rank-metric codes, particularly from random codes. Algebraic invariants have emerged as powerful tools in this context, as they provide a systematic framework for differentiating between known families of codes and random constructions. Previous studies have leveraged properties such as the rank weight distributions【3】 and automorphism groups of codes【4】 to characterize and classify these structures. Despite these advancements, the exploration of geometric and algebraic invariants remains an active and evolving area of inquiry.
+
+This paper introduces a novel geometric invariant based on the Schur product, a concept traditionally used in the Hamming metric, to analyze rank-metric codes. Similar geometric approaches have been applied in other areas of coding theory, including investigations into vanishing ideals and linear sets, which offer deeper insights into the structure of codes (invalid citation). By focusing on the sequence of dimensions of Schur powers, the proposed method builds on this tradition, providing a fresh perspective for distinguishing Gabidulin codes from random constructions.","### Related Work
+
+Rank-metric codes have been extensively studied due to their applications in various fields such as network coding, distributed storage, and post-quantum cryptography. The foundational work by Gabidulin [1] introduced rank-metric codes as an analogue to Reed-Solomon codes, which was further explored by Delsarte [2]. These codes are particularly valued for their error-correcting capabilities in scenarios involving rank errors, such as crisscross errors in data arrays.
+
+Recent advancements in the field have focused on constructing new families of rank-metric codes with unique algebraic structures. For instance, Ndiaye et al. [3] generalized subspace subcodes in the rank metric, providing new insights into the construction and characterization of these codes. Similarly, Bik and Neri [4] extended the concept of symmetric Gabidulin codes to higher-degree polynomials, introducing essential-rank metric codes with efficient decoding algorithms.
+
+The study of invariants has become crucial in distinguishing different families of rank-metric codes. Neri et al. [5] explored the use of dimension sequences as invariants to classify and differentiate between known families of rank-metric codes, such as Gabidulin and twisted Gabidulin codes. This approach has been instrumental in understanding the equivalence and characterization of these codes.
+
+In the context of geometric approaches, Randrianarisoa [6] developed a geometric framework for rank-metric codes, providing a simpler definition for generalized rank weights and classifying constant rank weight codes. This geometric perspective aligns with the current work, which introduces a novel geometric invariant inspired by the Schur product in the Hamming metric.
+
+The introduction of the Schur product as a tool for analyzing rank-metric codes is reminiscent of the work by Neri et al. [7], who characterized systematic encoders for generalized Gabidulin codes using $q$-analogues of Cauchy matrices. This approach highlights the potential of algebraic and geometric methods in advancing the theory of rank-metric codes.
+
+Overall, the exploration of new invariants and geometric perspectives continues to enrich the understanding of rank-metric codes, offering new avenues for their application and differentiation from random codes.
+
+### Citation List
+
+1. E. Gabidulin, ""Theory of codes with maximum rank distance,"" Problems of Information Transmission, vol. 21, no. 1, pp. 1-12, 1985.
+2. P. Delsarte, ""Bilinear forms over a finite field, with applications to coding theory,"" Journal of Combinatorial Theory, Series A, vol. 25, no. 3, pp. 226-241, 1978.
+3. O. Ndiaye, P. A. Kidoudou, H. T. Kalachi, ""Generalized Subspace Subcodes in the Rank Metric,"" arXiv:2301.12523, 2023.
+4. A. Bik, A. Neri, ""Higher-degree symmetric rank-metric codes,"" arXiv:2303.06745, 2023.
+5. A. Neri, S. Puchinger, A.-L. Horlemann-Trautmann, ""Equivalence and Characterizations of Linear Rank-Metric Codes Based on Invariants,"" arXiv:1911.13059, 2019.
+6. T. H. Randrianarisoa, ""A Geometric Approach to Rank Metric Codes and a Classification of Constant Weight Codes,"" arXiv:1907.04372, 2019.
+7. A. Neri, ""Systematic encoders for generalized Gabidulin codes and the $q$-analogue of Cauchy matrices,"" arXiv:1805.06706, 2018.","[('2301.12523', 'Generalized Subspace Subcodes in the Rank Metric'), ('2303.06745', 'Higher-degree symmetric rank-metric codes'), ('1410.7207', 'Generalized weights: an anticode approach'), ('2105.10451', 'Twisted Linearized Reed-Solomon Codes: A Skew Polynomial Framework'), ('1907.04372', 'A Geometric Approach to Rank Metric Codes and a Classification of Constant Weight Codes'), ('1805.06706', 'Systematic encoders for generalized Gabidulin codes and the $q$-analogue of Cauchy matrices'), ('2304.12095', 'Sum-rank metric codes'), ('1911.13059', 'Equivalence and Characterizations of Linear Rank-Metric Codes Based on Invariants'), ('1507.08641', 'New Criteria for MRD and Gabidulin Codes and some Rank-Metric Code Constructions'), ('2112.04989', 'The geometry of one-weight codes in the sum-rank metric')]",8.0

@@ -1,0 +1,105 @@
+{
+    "label": "natural_language_processing_tasks",
+    "description": null,
+    "level": 0,
+    "source": "initial",
+    "example_papers": [
+        [
+            0,
+            "BERT: Pre-training of Deep Bidirectional Transformers"
+        ],
+        [
+            1,
+            "GPT-3: Language Models are Few-Shot Learners"
+        ],
+        [
+            2,
+            "Attention Is All You Need"
+        ],
+        [
+            3,
+            "ImageNet Classification with Deep Convolutional Neural Networks"
+        ],
+        [
+            4,
+            "Deep Residual Learning for Image Recognition"
+        ]
+    ],
+    "paper_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+    ],
+    "children": [
+        {
+            "label": "natural_language_understanding_(nlu)_tasks",
+            "description": "These tasks focus on enabling machines to comprehend and interpret human language, extracting meaning, intent, and entities from text or speech.",
+            "level": 1,
+            "source": "initial",
+            "example_papers": [
+                [
+                    0,
+                    "BERT: Pre-training of Deep Bidirectional Transformers"
+                ],
+                [
+                    1,
+                    "GPT-3: Language Models are Few-Shot Learners"
+                ]
+            ],
+            "paper_ids": [
+                0,
+                1
+            ],
+            "children": [
+                {
+                    "label": "semantic_parsing_tasks",
+                    "description": "Semantic parsing tasks involve converting natural language utterances into formal meaning representations, such as logical forms, executable queries, or structured data, enabling machines to understand and act upon the meaning of human language.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "discourse_understanding_tasks",
+                    "description": "Discourse understanding tasks focus on comprehending the relationships and coherence between sentences and larger textual units, including coreference resolution, anaphora resolution, and discourse parsing, to build a holistic understanding of a document's meaning.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        },
+        {
+            "label": "natural_language_generation_(nlg)_tasks",
+            "description": "These tasks involve enabling machines to produce coherent, grammatically correct, and contextually relevant human-like text or speech from structured data or internal representations.",
+            "level": 1,
+            "source": "initial",
+            "example_papers": [
+                [
+                    0,
+                    "BERT: Pre-training of Deep Bidirectional Transformers"
+                ],
+                [
+                    1,
+                    "GPT-3: Language Models are Few-Shot Learners"
+                ]
+            ],
+            "paper_ids": [
+                0,
+                1
+            ],
+            "children": [
+                {
+                    "label": "data-to-text_generation",
+                    "description": "This task involves generating natural language descriptions or summaries directly from structured data, such as tables, databases, or knowledge graphs, without human intervention.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "text-to-text_generation",
+                    "description": "This task focuses on transforming existing text into new text, encompassing various sub-tasks like summarization, machine translation, paraphrasing, and style transfer.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        }
+    ]
+}

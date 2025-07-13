@@ -1,0 +1,10 @@
+TASKS 维度树状结构:
+==================================================
+
+└── natural_language_processing_tasks (Level: 0, Papers: 5)
+    ├── natural_language_understanding_(nlu)_tasks (Level: 1, Papers: 2)
+    │   ├── semantic_parsing_tasks (Level: 2, Papers: 0)
+    │   └── discourse_understanding_tasks (Level: 2, Papers: 0)
+    └── natural_language_generation_(nlg)_tasks (Level: 1, Papers: 2)
+        ├── data-to-text_generation (Level: 2, Papers: 0)
+        └── text-to-text_generation (Level: 2, Papers: 0)

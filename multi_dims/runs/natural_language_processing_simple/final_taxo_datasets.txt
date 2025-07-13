@@ -1,0 +1,48 @@
+Label: natural_language_processing_datasets
+Dimension: datasets
+Description: None
+Level: 0
+Source: Initial
+----------------------------------------
+Children:
+  Label: monolingual_datasets
+  Dimension: datasets
+  Description: Monolingual datasets consist of text or speech data in a single language, primarily used for tasks like language modeling, text classification, sentiment analysis, and named entity recognition within that specific language.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: text_corpora
+    Dimension: datasets
+    Description: These datasets consist of large collections of text in a single language, often gathered from diverse sources like books, articles, web pages, or social media, primarily used for language modeling, linguistic analysis, and training general-purpose NLP models.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: task-specific_monolingual_datasets
+    Dimension: datasets
+    Description: These datasets are curated for specific NLP tasks within a single language, such as sentiment analysis, named entity recognition, question answering, or summarization, and typically include annotations relevant to the task.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: multilingual_datasets
+  Dimension: datasets
+  Description: Multilingual datasets contain text or speech data in multiple languages, often with parallel or comparable corpora, enabling research in machine translation, cross-lingual transfer learning, and multilingual natural language understanding.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: parallel_corpora
+    Dimension: datasets
+    Description: These datasets consist of texts that are translations of each other across multiple languages, often sentence-aligned, and are primarily used for machine translation, cross-lingual transfer learning, and comparative linguistic studies.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: multilingual_monolingual_corpora
+    Dimension: datasets
+    Description: These datasets comprise large collections of texts in multiple distinct languages, without direct translations between them, and are valuable for training multilingual language models, cross-lingual information retrieval, and understanding language-specific phenomena.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+----------------------------------------

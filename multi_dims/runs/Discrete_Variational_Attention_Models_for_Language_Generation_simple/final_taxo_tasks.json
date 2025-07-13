@@ -1,0 +1,229 @@
+{
+    "label": "discrete_variational_attention_models_for_language_generation_tasks",
+    "description": null,
+    "level": 2,
+    "source": "initial",
+    "example_papers": [
+        [
+            0,
+            "Discrete Variational Attention Models for Language Generation"
+        ],
+        [
+            1,
+            "Natural Language Generation with Neural Variational Models"
+        ],
+        [
+            2,
+            "mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation"
+        ],
+        [
+            3,
+            "Generative Text Modeling through Short Run Inference"
+        ],
+        [
+            4,
+            "Discrete Auto-regressive Variational Attention Models for Text Modeling"
+        ],
+        [
+            5,
+            "Preventing Posterior Collapse with Levenshtein Variational Autoencoder"
+        ],
+        [
+            6,
+            "Conditional Variational Autoencoder for Neural Machine Translation"
+        ],
+        [
+            7,
+            "Improve Diverse Text Generation by Self Labeling Conditional Variational Auto Encoder"
+        ],
+        [
+            8,
+            "Stochastic Wasserstein Autoencoder for Probabilistic Sentence Generation"
+        ],
+        [
+            9,
+            "Implicit Deep Latent Variable Models for Text Generation"
+        ]
+    ],
+    "paper_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+    ],
+    "children": [
+        {
+            "label": "abstractive_summarization",
+            "description": "This task involves generating a concise and coherent summary of a longer text, where the generated summary may contain new phrases and sentences not present in the original document, leveraging discrete variational attention to select and synthesize key information.",
+            "level": 1,
+            "source": "initial",
+            "children": [
+                {
+                    "label": "neural_abstractive_summarization",
+                    "description": "This task focuses on generating concise and coherent summaries from source documents using neural network architectures, often leveraging attention mechanisms to capture salient information and generate novel phrases not present in the original text.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "controllable_abstractive_summarization",
+                    "description": "This task involves generating abstractive summaries while allowing for explicit control over certain attributes of the output, such as length, style, sentiment, or the inclusion/exclusion of specific entities, often achieved through conditioning mechanisms or constrained decoding.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        },
+        {
+            "label": "dialogue_generation",
+            "description": "This task focuses on creating natural and contextually appropriate responses in a conversational setting, utilizing discrete variational attention to model the dynamic interplay of turns and generate diverse and relevant utterances.",
+            "level": 1,
+            "source": "initial",
+            "example_papers": [
+                [
+                    9,
+                    "Implicit Deep Latent Variable Models for Text Generation"
+                ],
+                [
+                    14,
+                    "Dual Latent Variable Model for Low-Resource Natural Language Generation in Dialogue Systems"
+                ]
+            ],
+            "paper_ids": [
+                9,
+                14
+            ],
+            "children": [
+                {
+                    "label": "task",
+                    "description": "This category encompasses research papers that directly address the development and evaluation of models for generating conversational responses in various dialogue settings.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        },
+        {
+            "label": "text_generation_tasks",
+            "description": "This task involves generating coherent and contextually relevant text, encompassing various forms of text output beyond summarization or dialogue, utilizing discrete variational attention models.",
+            "level": 3,
+            "source": "width",
+            "example_papers": [
+                [
+                    0,
+                    "Discrete Variational Attention Models for Language Generation"
+                ],
+                [
+                    1,
+                    "Natural Language Generation with Neural Variational Models"
+                ],
+                [
+                    2,
+                    "mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation"
+                ],
+                [
+                    3,
+                    "Generative Text Modeling through Short Run Inference"
+                ],
+                [
+                    4,
+                    "Discrete Auto-regressive Variational Attention Models for Text Modeling"
+                ],
+                [
+                    5,
+                    "Preventing Posterior Collapse with Levenshtein Variational Autoencoder"
+                ],
+                [
+                    7,
+                    "Improve Diverse Text Generation by Self Labeling Conditional Variational Auto Encoder"
+                ],
+                [
+                    8,
+                    "Stochastic Wasserstein Autoencoder for Probabilistic Sentence Generation"
+                ],
+                [
+                    9,
+                    "Implicit Deep Latent Variable Models for Text Generation"
+                ],
+                [
+                    10,
+                    "MacLaSa: Multi-Aspect Controllable Text Generation via Efficient Sampling from Compact Latent Space"
+                ]
+            ],
+            "paper_ids": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
+            ]
+        },
+        {
+            "label": "language_modeling_tasks",
+            "description": "This task focuses on predicting the next word or sequence of words in a given context, aiming to learn the underlying structure and patterns of language, often leveraging discrete variational attention for improved sequence generation.",
+            "level": 3,
+            "source": "width",
+            "example_papers": [
+                [
+                    3,
+                    "Generative Text Modeling through Short Run Inference"
+                ],
+                [
+                    4,
+                    "Discrete Auto-regressive Variational Attention Models for Text Modeling"
+                ],
+                [
+                    9,
+                    "Implicit Deep Latent Variable Models for Text Generation"
+                ],
+                [
+                    11,
+                    "LlaMaVAE: Guiding Large Language Model Generation via Continuous Latent Sentence Spaces"
+                ],
+                [
+                    12,
+                    "Optimus: Organizing Sentences via Pre-trained Modeling of a Latent Space"
+                ]
+            ],
+            "paper_ids": [
+                3,
+                4,
+                9,
+                11,
+                12
+            ]
+        },
+        {
+            "label": "machine_translation_tasks",
+            "description": "This task involves automatically translating text from one natural language to another, where discrete variational attention models can enhance the alignment and generation of translated sequences.",
+            "level": 3,
+            "source": "width",
+            "example_papers": [
+                [
+                    6,
+                    "Conditional Variational Autoencoder for Neural Machine Translation"
+                ]
+            ],
+            "paper_ids": [
+                6
+            ]
+        }
+    ]
+}

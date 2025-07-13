@@ -1,0 +1,48 @@
+{
+    "label": "natural_language_processing_real_world_domains",
+    "description": null,
+    "level": 0,
+    "source": "initial",
+    "children": [
+        {
+            "label": "healthcare_and_medicine",
+            "description": "This subcategory encompasses the application of NLP techniques to solve problems within the healthcare and medical sectors, such as analyzing electronic health records, assisting in clinical decision-making, or summarizing medical literature.",
+            "level": 1,
+            "source": "initial",
+            "children": [
+                {
+                    "label": "clinical_decision_support_systems",
+                    "description": "This domain encompasses the application of NLP to develop systems that assist healthcare professionals in making informed decisions regarding patient diagnosis, treatment, and management, often by analyzing electronic health records and medical literature.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "medical_information_extraction_and_summarization",
+                    "description": "This domain focuses on using NLP techniques to automatically extract structured information from unstructured medical texts, such as clinical notes, research papers, and patient narratives, and to generate concise summaries of this information for various healthcare purposes.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        },
+        {
+            "label": "finance_and_business",
+            "description": "This subcategory focuses on the use of NLP to address challenges in financial services and general business operations, including sentiment analysis for market prediction, automated customer service, or legal document processing.",
+            "level": 1,
+            "source": "initial",
+            "children": [
+                {
+                    "label": "financial_sentiment_analysis",
+                    "description": "This domain focuses on applying natural language processing techniques to analyze and interpret sentiment from financial texts, such as news articles, social media, and earnings call transcripts, to predict market trends or assess company performance.",
+                    "level": 2,
+                    "source": "initial"
+                },
+                {
+                    "label": "business_process_automation",
+                    "description": "This domain involves using NLP to automate and optimize various business processes, including document understanding, customer service interactions, contract analysis, and information extraction from unstructured business data.",
+                    "level": 2,
+                    "source": "initial"
+                }
+            ]
+        }
+    ]
+}

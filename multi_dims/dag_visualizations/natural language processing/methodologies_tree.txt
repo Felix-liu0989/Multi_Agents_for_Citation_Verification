@@ -1,0 +1,10 @@
+METHODOLOGIES 维度树状结构:
+==================================================
+
+└── natural_language_processing_methodologies (Level: 0, Papers: 5)
+    ├── data_centric_nlp_methodologies (Level: 1, Papers: 0)
+    │   ├── data_augmentation_methodologies (Level: 2, Papers: 0)
+    │   └── data_curation_and_annotation_methodologies (Level: 2, Papers: 0)
+    └── model_centric_nlp_methodologies (Level: 1, Papers: 5)
+        ├── model_architecture_design_methodologies (Level: 2, Papers: 0)
+        └── model_training_and_optimization_methodologies (Level: 2, Papers: 0)

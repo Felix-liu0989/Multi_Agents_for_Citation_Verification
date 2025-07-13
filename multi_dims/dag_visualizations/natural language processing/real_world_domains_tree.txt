@@ -1,0 +1,10 @@
+REAL_WORLD_DOMAINS 维度树状结构:
+==================================================
+
+└── natural_language_processing_real_world_domains (Level: 0, Papers: 0)
+    ├── healthcare_and_medicine (Level: 1, Papers: 0)
+    │   ├── clinical_decision_support_systems (Level: 2, Papers: 0)
+    │   └── medical_information_extraction_and_summarization (Level: 2, Papers: 0)
+    └── finance_and_business (Level: 1, Papers: 0)
+        ├── financial_sentiment_analysis (Level: 2, Papers: 0)
+        └── business_process_automation (Level: 2, Papers: 0)

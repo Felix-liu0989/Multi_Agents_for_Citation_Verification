@@ -1,0 +1,16 @@
+title,arxiv_id,extracted_citations,total_citations,paragraph_count,citations_per_paragraph,provided_citation_count
+"CoCoNUT: Structural Code Understanding does not
+fall out of a tree",,"[('', 'Liu et al.'), ('', 'Ding et al.'), ('', 'Ni et al.'), ('', 'Jabbarvand')]",4,4,1.0,5
+"Partially private, optimistic, distributed, and verifiable machine learning inference",,"[('', 'Riasi et al.'), ('Riasi et al., 2024', ''), ('', 'Bellachia et al.'), ('Bellachia et al., 2025', '')]",4,4,1.0,2
+"SpikeDecoder: Realizing the GPT Architecture
+with Spiking Neural Networks",,"[('', 'Shi et al.'), ('', 'Wang et al.'), ('', 'Xu et al.'), ('', 'Yao et al.'), ('Yao et al., 2024', ''), ('', 'Lee et al.')]",6,4,1.5,6
+"T2Vid: Translating Long Text into Multi-Image
+is the Catalyst for Video-LLMs",2411.19951,"[('', 'Chen'), ('Wei & Chen, 2024', ''), ('', 'Sapkota et al.'), ('Sapkota et al., 2025', ''), ('', 'Ma et al.'), ('Ma et al., 2024', '')]",6,4,1.5,3
+Reverse Thinking Makes LLMs Stronger Reasoners,2411.19865,"[('', 'Gor et al.'), ('', 'Collins et al.'), ('', 'Yao et al.'), ('', 'Lee et al.'), ('', 'Bandyopadhyay et al.')]",5,4,1.25,5
+Money Burning Improves Mediated Communication,2411.19431,"[('', 'Tennenholtz'), ('', 'Tennenholtz')]",2,4,0.5,2
+"Condorcet-Consistent Choice
+Among Three Candidates",2411.19857,"[('', 'Pacuit'), ('', 'Peters'), ('', 'Wattenhofer')]",3,4,0.75,3
+Topological Approach for Data Assimilation,2411.18627,"[('', 'Luo'), ('', 'Xiao et al.'), ('', 'Cheng et al.'), ('', 'Li et al.'), ('', 'Brown'), ('', 'Reich')]",6,4,1.5,6
+"Timely and Energy-Efficient Multi-Step Update
+Processing",2411.19854v1,"[('', 'Nair'), ('', 'Nair'), ('', 'Perry'), ('', 'Perry'), ('', 'Vaze'), ('', 'Vaze')]",6,4,1.5,3
+A GEOMETRIC INVARIANT OF LINEAR RANK-METRIC CODES,2411.19087,"[('', 'Liu et al.'), ('', 'as'), ('', 'as'), ('', 'Kadhe et al.'), ('', 'rmann et al.')]",5,5,1.0,5

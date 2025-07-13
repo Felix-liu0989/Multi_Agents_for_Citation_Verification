@@ -1,0 +1,52 @@
+Label: natural_language_processing_methodologies
+Dimension: methodologies
+Description: None
+Level: 0
+Source: Initial
+# of Papers: 5
+Example Papers: [(0, 'BERT: Pre-training of Deep Bidirectional Transformers'), (1, 'GPT-3: Language Models are Few-Shot Learners'), (2, 'Attention Is All You Need')]
+----------------------------------------
+Children:
+  Label: data_centric_nlp_methodologies
+  Dimension: methodologies
+  Description: These methodologies focus on improving the quality, quantity, and diversity of data used in NLP models, including techniques for data augmentation, cleaning, labeling, and synthetic data generation, often aiming to enhance model robustness and performance without altering the model architecture itself.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: data_augmentation_methodologies
+    Dimension: methodologies
+    Description: These methodologies focus on techniques for increasing the quantity and diversity of training data without collecting new samples, often through transformations, paraphrasing, or synthetic data generation to improve model robustness and generalization.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: data_curation_and_annotation_methodologies
+    Dimension: methodologies
+    Description: These methodologies encompass systematic approaches for selecting, cleaning, labeling, and validating datasets to ensure high quality, consistency, and relevance for specific NLP tasks, often involving expert human annotation or sophisticated programmatic filtering.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: model_centric_nlp_methodologies
+  Dimension: methodologies
+  Description: These methodologies primarily involve innovations in the design, architecture, training, and optimization of NLP models, encompassing areas like novel neural network architectures, transfer learning techniques, efficient model training algorithms, and methods for model compression and interpretability.
+  Level: 1
+  Source: Initial
+  # of Papers: 5
+  Example Papers: [(0, 'BERT: Pre-training of Deep Bidirectional Transformers'), (1, 'GPT-3: Language Models are Few-Shot Learners'), (2, 'Attention Is All You Need')]
+  ----------------------------------------
+  Children:
+    Label: model_architecture_design_methodologies
+    Dimension: methodologies
+    Description: These methodologies focus on the creation, modification, and optimization of the internal structure and components of NLP models, including novel neural network architectures, attention mechanisms, and specialized layers, to improve performance or address specific linguistic challenges.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: model_training_and_optimization_methodologies
+    Dimension: methodologies
+    Description: These methodologies encompass techniques for effectively training NLP models, including novel loss functions, regularization strategies, optimization algorithms, and curriculum learning approaches, to enhance model convergence, generalization, and robustness.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+----------------------------------------

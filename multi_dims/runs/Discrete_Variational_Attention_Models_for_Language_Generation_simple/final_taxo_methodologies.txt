@@ -1,0 +1,102 @@
+Label: discrete_variational_attention_models_for_language_generation_methodologies
+Dimension: methodologies
+Description: None
+Level: 0
+Source: Initial
+# of Papers: 15
+Example Papers: [(0, 'Discrete Variational Attention Models for Language Generation'), (1, 'Natural Language Generation with Neural Variational Models'), (2, 'mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation')]
+----------------------------------------
+Children:
+  Label: variational_inference-based_attention_methodologies
+  Dimension: methodologies
+  Description: These methodologies focus on developing and refining variational inference techniques to learn and optimize discrete attention distributions within language generation models, often involving the approximation of intractable posteriors over attention assignments.
+  Level: 1
+  Source: Initial
+  # of Papers: 4
+  Example Papers: [(0, 'Discrete Variational Attention Models for Language Generation'), (1, 'Natural Language Generation with Neural Variational Models'), (4, 'Discrete Auto-regressive Variational Attention Models for Text Modeling')]
+  ----------------------------------------
+  Children:
+    Label: continuous_variational_attention_methodologies
+    Dimension: methodologies
+    Description: These methodologies focus on modeling attention weights as continuous random variables, often using Gaussian or other continuous distributions, and employ variational inference to approximate the posterior distribution of these attention weights, enabling more flexible and nuanced attention mechanisms.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: hybrid_variational_attention_methodologies
+    Dimension: methodologies
+    Description: These methodologies combine aspects of both continuous and discrete variational inference for attention, often by using continuous latent variables to guide the selection of discrete attention components or by applying variational inference to learn a mixture of attention distributions.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: stochastic_gradient_estimation_for_discrete_attention
+  Dimension: methodologies
+  Description: This category encompasses methodologies that introduce or improve upon stochastic gradient estimators, such as REINFORCE or Gumbel-Softmax, to enable end-to-end training of language generation models with discrete attention mechanisms.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: score_function_estimators_for_discrete_attention
+    Dimension: methodologies
+    Description: This subcategory encompasses methodologies that leverage score function estimators (REINFORCE-like methods) to estimate gradients for discrete attention mechanisms, often focusing on reducing variance through baselines or control variates to improve training stability and convergence in discrete variational attention models for language generation.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: relaxation_and_reparameterization_techniques_for_discrete_attention
+    Dimension: methodologies
+    Description: This subcategory includes methodologies that approximate discrete attention distributions with continuous relaxations (e.g., Gumbel-Softmax, Straight-Through Estimators) or employ reparameterization tricks to enable differentiable gradient estimation, thereby facilitating end-to-end training of discrete variational attention models for language generation.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: regularization_and_inference_techniques_for_discrete_attention
+  Dimension: methodologies
+  Description: These methodologies focus on developing and applying regularization strategies and advanced inference methods to improve the stability and performance of discrete variational attention models.
+  Level: 1
+  Source: width
+  # of Papers: 4
+  Example Papers: [(0, 'Discrete Variational Attention Models for Language Generation'), (2, 'mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation'), (3, 'Generative Text Modeling through Short Run Inference')]
+  ----------------------------------------
+  Label: conditional_and_implicit_variational_models_for_discrete_attention
+  Dimension: methodologies
+  Description: This category includes methodologies that extend variational attention models to conditional settings or leverage implicit distributions for more flexible and controllable language generation.
+  Level: 1
+  Source: width
+  # of Papers: 3
+  Example Papers: [(6, 'Conditional Variational Autoencoder for Neural Machine Translation'), (7, 'Improve Diverse Text Generation by Self Labeling Conditional Variational Auto Encoder'), (9, 'Implicit Deep Latent Variable Models for Text Generation')]
+  ----------------------------------------
+  Label: controllable_and_pre-trained_variational_autoencoder_methodologies
+  Dimension: methodologies
+  Description: These methodologies explore the use of variational autoencoders for achieving fine-grained control over text generation and leveraging pre-trained models to enhance performance.
+  Level: 1
+  Source: width
+  # of Papers: 9
+  Example Papers: [(2, 'mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation'), (3, 'Generative Text Modeling through Short Run Inference'), (5, 'Preventing Posterior Collapse with Levenshtein Variational Autoencoder')]
+  ----------------------------------------
+  Children:
+    Label: controllable_text_generation_with_variational_autoencoders_methodologies
+    Dimension: methodologies
+    Description: This cluster focuses on methodologies that enable fine-grained control over text generation using variational autoencoders, often incorporating multi-aspect control or large language model guidance.
+    Level: 2
+    Source: depth
+    # of Papers: 3
+    Example Papers: [(10, 'MacLaSa: Multi-Aspect Controllable Text Generation via Efficient Sampling from Compact Latent Space'), (11, 'LlaMaVAE: Guiding Large Language Model Generation via Continuous Latent Sentence Spaces'), (12, 'Optimus: Organizing Sentences via Pre-trained Modeling of a Latent Space')]
+    ----------------------------------------
+    Label: pre-trained_and_recurrent_variational_autoencoder_architectures_methodologies
+    Dimension: methodologies
+    Description: This cluster encompasses methodologies that integrate pre-trained models or recurrent architectures with variational autoencoders for enhanced language modeling and generation.
+    Level: 2
+    Source: depth
+    # of Papers: 4
+    Example Papers: [(2, 'mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation'), (11, 'LlaMaVAE: Guiding Large Language Model Generation via Continuous Latent Sentence Spaces'), (12, 'Optimus: Organizing Sentences via Pre-trained Modeling of a Latent Space')]
+    ----------------------------------------
+    Label: variational_autoencoder_inference_and_training_optimization_methodologies
+    Dimension: methodologies
+    Description: This cluster includes methodologies focused on optimizing the inference and training processes of variational autoencoders, addressing issues like posterior collapse and efficient sampling.
+    Level: 2
+    Source: depth
+    # of Papers: 5
+    Example Papers: [(2, 'mu-Forcing: Training Variational Recurrent Autoencoders for Text Generation'), (3, 'Generative Text Modeling through Short Run Inference'), (5, 'Preventing Posterior Collapse with Levenshtein Variational Autoencoder')]
+    ----------------------------------------
+  ----------------------------------------
+----------------------------------------

@@ -1,11 +1,6 @@
-venv
-database.db
+# 环境配置文件
 .env
-.database.db.lock
-src/webapp/temporary
-api_key.json
-dist
-*/*.egg-info
+*.env
 
 # Python编译文件
 __pycache__/
@@ -18,14 +13,6 @@ __pycache__/
 
 # 内部数据文件
 internal_collection.json
-*.xlsx
-*.csv
-*.json
-*.txt
-*.log
-*.md
-*.html
-*.css
 
 # Jupyter Notebook检查点
 .ipynb_checkpoints/
@@ -39,3 +26,8 @@ Thumbs.db
 # 临时文件
 *.tmp
 *.temp
+
+# 蛋文件
+*.egg-info/
+dist/
+build/ 

@@ -1,0 +1,155 @@
+{
+    "0": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "variational_inference-based_attention_methodologies",
+            "regularization_and_inference_techniques_for_discrete_attention"
+        ]
+    },
+    "1": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "variational_inference-based_attention_methodologies"
+        ],
+        "evaluation_methods": [
+            "extrinsic_evaluation_of_discrete_variational_attention_models",
+            "intrinsic_evaluation_of_discrete_variational_attention_models"
+        ]
+    },
+    "2": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "pre-trained_and_recurrent_variational_autoencoder_architectures_methodologies",
+            "variational_autoencoder_inference_and_training_optimization_methodologies",
+            "regularization_and_inference_techniques_for_discrete_attention"
+        ]
+    },
+    "3": {
+        "tasks": [
+            "text_generation_tasks",
+            "language_modeling_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "variational_autoencoder_inference_and_training_optimization_methodologies",
+            "regularization_and_inference_techniques_for_discrete_attention"
+        ]
+    },
+    "4": {
+        "tasks": [
+            "text_generation_tasks",
+            "language_modeling_tasks"
+        ],
+        "methodologies": [
+            "variational_inference-based_attention_methodologies",
+            "regularization_and_inference_techniques_for_discrete_attention"
+        ]
+    },
+    "5": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "variational_autoencoder_inference_and_training_optimization_methodologies"
+        ]
+    },
+    "6": {
+        "tasks": [
+            "machine_translation_tasks"
+        ],
+        "methodologies": [
+            "conditional_and_implicit_variational_models_for_discrete_attention"
+        ]
+    },
+    "7": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "datasets": [
+            "datasets_for_variational_autoencoder_(vae)_based_language_generation"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "conditional_and_implicit_variational_models_for_discrete_attention",
+            "variational_autoencoder_inference_and_training_optimization_methodologies"
+        ]
+    },
+    "8": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "variational_autoencoder_inference_and_training_optimization_methodologies"
+        ]
+    },
+    "9": {
+        "tasks": [
+            "text_generation_tasks",
+            "dialogue_generation",
+            "language_modeling_tasks"
+        ],
+        "methodologies": [
+            "conditional_and_implicit_variational_models_for_discrete_attention"
+        ]
+    },
+    "10": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "controllable_text_generation_with_variational_autoencoders_methodologies"
+        ]
+    },
+    "11": {
+        "tasks": [
+            "text_generation_tasks",
+            "language_modeling_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "pre-trained_and_recurrent_variational_autoencoder_architectures_methodologies",
+            "controllable_text_generation_with_variational_autoencoders_methodologies"
+        ],
+        "evaluation_methods": []
+    },
+    "12": {
+        "tasks": [
+            "text_generation_tasks",
+            "language_modeling_tasks"
+        ],
+        "methodologies": [
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "pre-trained_and_recurrent_variational_autoencoder_architectures_methodologies",
+            "controllable_text_generation_with_variational_autoencoders_methodologies"
+        ]
+    },
+    "13": {
+        "tasks": [
+            "text_generation_tasks"
+        ],
+        "methodologies": [
+            "variational_inference-based_attention_methodologies",
+            "controllable_and_pre-trained_variational_autoencoder_methodologies",
+            "pre-trained_and_recurrent_variational_autoencoder_architectures_methodologies"
+        ]
+    },
+    "14": {
+        "tasks": [
+            "text_generation_tasks",
+            "dialogue_generation"
+        ],
+        "methodologies": [
+            "variational_inference-based_attention_methodologies"
+        ]
+    }
+}

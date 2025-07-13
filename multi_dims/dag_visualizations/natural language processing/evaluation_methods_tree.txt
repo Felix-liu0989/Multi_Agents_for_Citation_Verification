@@ -1,0 +1,10 @@
+EVALUATION_METHODS 维度树状结构:
+==================================================
+
+└── natural_language_processing_evaluation_methods (Level: 0, Papers: 0)
+    ├── intrinsic_evaluation (Level: 1, Papers: 0)
+    │   ├── model-centric_evaluation (Level: 2, Papers: 0)
+    │   └── dataset-centric_evaluation (Level: 2, Papers: 0)
+    └── extrinsic_evaluation (Level: 1, Papers: 0)
+        ├── task-based_evaluation (Level: 2, Papers: 0)
+        └── human-in-the-loop_evaluation (Level: 2, Papers: 0)

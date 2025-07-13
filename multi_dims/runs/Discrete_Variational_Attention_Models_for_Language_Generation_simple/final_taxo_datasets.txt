@@ -1,0 +1,52 @@
+Label: discrete_variational_attention_models_for_language_generation_datasets
+Dimension: datasets
+Description: None
+Level: 0
+Source: Initial
+# of Papers: 1
+Example Papers: [(7, 'Improve Diverse Text Generation by Self Labeling Conditional Variational Auto Encoder')]
+----------------------------------------
+Children:
+  Label: datasets_for_variational_autoencoder_(vae)_based_language_generation
+  Dimension: datasets
+  Description: These datasets are specifically designed to train and evaluate discrete variational attention models that leverage Variational Autoencoders (VAEs) for language generation, often featuring parallel text, latent variable annotations, or structured linguistic information to facilitate the learning of disentangled and interpretable latent representations for text.
+  Level: 1
+  Source: Initial
+  # of Papers: 1
+  Example Papers: [(7, 'Improve Diverse Text Generation by Self Labeling Conditional Variational Auto Encoder')]
+  ----------------------------------------
+  Children:
+    Label: text_datasets_for_unsupervised_language_modeling
+    Dimension: datasets
+    Description: These datasets primarily consist of large collections of raw text, suitable for training VAEs to learn latent representations of language without explicit labels, enabling tasks like text generation, style transfer, and semantic interpolation.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: structured_text_datasets_for_controlled_generation
+    Dimension: datasets
+    Description: These datasets include text paired with explicit attributes or metadata (e.g., sentiment, topic, style tags), allowing VAEs to learn disentangled latent representations that facilitate controlled language generation based on specified conditions.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: datasets_for_attention-based_discrete_latent_variable_models
+  Dimension: datasets
+  Description: This category encompasses datasets tailored for discrete variational attention models that explicitly model discrete latent variables, often through techniques like Gumbel-softmax or straight-through estimators, and typically include diverse text corpora suitable for tasks such as text summarization, machine translation, or dialogue generation, where the discrete latent states can represent high-level semantic or syntactic structures.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: text_generation_datasets_with_controlled_attributes
+    Dimension: datasets
+    Description: These datasets are specifically designed for training and evaluating attention-based discrete latent variable models in language generation tasks where the generated text needs to adhere to specific, controllable attributes (e.g., sentiment, style, topic), often requiring the model to learn discrete latent representations for these attributes.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: dialogue_and_conversational_datasets_with_latent_intent
+    Dimension: datasets
+    Description: This category includes datasets for dialogue systems and conversational AI, where attention-based discrete latent variable models can be used to capture underlying discrete intents, dialogue acts, or conversational states, enabling more nuanced and context-aware responses.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+----------------------------------------

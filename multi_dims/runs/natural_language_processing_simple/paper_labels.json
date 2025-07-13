@@ -1,0 +1,38 @@
+{
+    "0": {
+        "tasks": [
+            "natural_language_generation_(nlg)_tasks",
+            "natural_language_understanding_(nlu)_tasks"
+        ],
+        "methodologies": [
+            "model_centric_nlp_methodologies"
+        ]
+    },
+    "1": {
+        "tasks": [
+            "natural_language_generation_(nlg)_tasks",
+            "natural_language_understanding_(nlu)_tasks"
+        ],
+        "methodologies": [
+            "model_centric_nlp_methodologies"
+        ]
+    },
+    "2": {
+        "tasks": [],
+        "methodologies": [
+            "model_centric_nlp_methodologies"
+        ]
+    },
+    "3": {
+        "tasks": [],
+        "methodologies": [
+            "model_centric_nlp_methodologies"
+        ]
+    },
+    "4": {
+        "tasks": [],
+        "methodologies": [
+            "model_centric_nlp_methodologies"
+        ]
+    }
+}

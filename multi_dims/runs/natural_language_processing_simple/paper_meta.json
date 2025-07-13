@@ -1,0 +1,22 @@
+{
+  "0": {
+    "title": "BERT: Pre-training of Deep Bidirectional Transformers",
+    "abstract": "We introduce BERT, a new method for pre-training language representations which obtains state-of-the-art results on a wide array of natural language processing tasks."
+  },
+  "1": {
+    "title": "GPT-3: Language Models are Few-Shot Learners",
+    "abstract": "We show that scaling up language models greatly improves task-agnostic, few-shot performance, sometimes even reaching competitiveness with prior state-of-the-art fine-tuning approaches."
+  },
+  "2": {
+    "title": "Attention Is All You Need",
+    "abstract": "We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely."
+  },
+  "3": {
+    "title": "ImageNet Classification with Deep Convolutional Neural Networks",
+    "abstract": "We trained a large, deep convolutional neural network to classify the 1.2 million high-resolution images in the ImageNet LSVRC-2010 contest into the 1000 different classes."
+  },
+  "4": {
+    "title": "Deep Residual Learning for Image Recognition",
+    "abstract": "We present a residual learning framework to ease the training of networks that are substantially deeper than those used previously."
+  }
+}

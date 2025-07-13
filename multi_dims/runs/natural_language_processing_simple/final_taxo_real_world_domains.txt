@@ -1,0 +1,48 @@
+Label: natural_language_processing_real_world_domains
+Dimension: real_world_domains
+Description: None
+Level: 0
+Source: Initial
+----------------------------------------
+Children:
+  Label: healthcare_and_medicine
+  Dimension: real_world_domains
+  Description: This subcategory encompasses the application of NLP techniques to solve problems within the healthcare and medical sectors, such as analyzing electronic health records, assisting in clinical decision-making, or summarizing medical literature.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: clinical_decision_support_systems
+    Dimension: real_world_domains
+    Description: This domain encompasses the application of NLP to develop systems that assist healthcare professionals in making informed decisions regarding patient diagnosis, treatment, and management, often by analyzing electronic health records and medical literature.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: medical_information_extraction_and_summarization
+    Dimension: real_world_domains
+    Description: This domain focuses on using NLP techniques to automatically extract structured information from unstructured medical texts, such as clinical notes, research papers, and patient narratives, and to generate concise summaries of this information for various healthcare purposes.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: finance_and_business
+  Dimension: real_world_domains
+  Description: This subcategory focuses on the use of NLP to address challenges in financial services and general business operations, including sentiment analysis for market prediction, automated customer service, or legal document processing.
+  Level: 1
+  Source: Initial
+  ----------------------------------------
+  Children:
+    Label: financial_sentiment_analysis
+    Dimension: real_world_domains
+    Description: This domain focuses on applying natural language processing techniques to analyze and interpret sentiment from financial texts, such as news articles, social media, and earnings call transcripts, to predict market trends or assess company performance.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: business_process_automation
+    Dimension: real_world_domains
+    Description: This domain involves using NLP to automate and optimize various business processes, including document understanding, customer service interactions, contract analysis, and information extraction from unstructured business data.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+----------------------------------------

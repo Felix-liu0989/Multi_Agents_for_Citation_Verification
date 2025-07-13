@@ -1,0 +1,54 @@
+Label: natural_language_processing_tasks
+Dimension: tasks
+Description: None
+Level: 0
+Source: Initial
+# of Papers: 5
+Example Papers: [(0, 'BERT: Pre-training of Deep Bidirectional Transformers'), (1, 'GPT-3: Language Models are Few-Shot Learners'), (2, 'Attention Is All You Need')]
+----------------------------------------
+Children:
+  Label: natural_language_understanding_(nlu)_tasks
+  Dimension: tasks
+  Description: These tasks focus on enabling machines to comprehend and interpret human language, extracting meaning, intent, and entities from text or speech.
+  Level: 1
+  Source: Initial
+  # of Papers: 2
+  Example Papers: [(0, 'BERT: Pre-training of Deep Bidirectional Transformers'), (1, 'GPT-3: Language Models are Few-Shot Learners')]
+  ----------------------------------------
+  Children:
+    Label: semantic_parsing_tasks
+    Dimension: tasks
+    Description: Semantic parsing tasks involve converting natural language utterances into formal meaning representations, such as logical forms, executable queries, or structured data, enabling machines to understand and act upon the meaning of human language.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: discourse_understanding_tasks
+    Dimension: tasks
+    Description: Discourse understanding tasks focus on comprehending the relationships and coherence between sentences and larger textual units, including coreference resolution, anaphora resolution, and discourse parsing, to build a holistic understanding of a document's meaning.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+  Label: natural_language_generation_(nlg)_tasks
+  Dimension: tasks
+  Description: These tasks involve enabling machines to produce coherent, grammatically correct, and contextually relevant human-like text or speech from structured data or internal representations.
+  Level: 1
+  Source: Initial
+  # of Papers: 2
+  Example Papers: [(0, 'BERT: Pre-training of Deep Bidirectional Transformers'), (1, 'GPT-3: Language Models are Few-Shot Learners')]
+  ----------------------------------------
+  Children:
+    Label: data-to-text_generation
+    Dimension: tasks
+    Description: This task involves generating natural language descriptions or summaries directly from structured data, such as tables, databases, or knowledge graphs, without human intervention.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+    Label: text-to-text_generation
+    Dimension: tasks
+    Description: This task focuses on transforming existing text into new text, encompassing various sub-tasks like summarization, machine translation, paraphrasing, and style transfer.
+    Level: 2
+    Source: Initial
+    ----------------------------------------
+  ----------------------------------------
+----------------------------------------
