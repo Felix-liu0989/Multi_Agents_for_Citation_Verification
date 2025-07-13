@@ -45,6 +45,7 @@ def query_llm(messages, model, temperature=1.0, max_new_tokens=1024, stop=None, 
     while tries < 5:
         tries += 1
         try:
+            
             client = OpenAI(api_key=api_key, base_url=api_url)
             resp = client.chat.completions.create(
                 model=model,
@@ -81,7 +82,7 @@ def query_llm(messages, model, temperature=1.0, max_new_tokens=1024, stop=None, 
     #     return None
 
 if __name__ == '__main__':
-    model = "deepseek-chat" #"gpt-4o-mini" #"deepseek-chat" # "qwen-plus"
+    model = "google/gemini-2.5-flash-preview-05-20" #"gpt-4o-mini" #"deepseek-chat" # "qwen-plus"
     # 'glm-4-0520'
     prompt = '你是谁'
     msg = [{'role': 'user', 'content': prompt}]

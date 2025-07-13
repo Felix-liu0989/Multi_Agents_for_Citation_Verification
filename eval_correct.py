@@ -19,6 +19,47 @@ pred_paths = [
 
 GPT_MODEL ='deepseek-chat' # "gpt-4.1-nano"#  #'deepseek-chat' #'google/gemini-2.5-flash-preview'
 system_prompt = "You're a good assistant at evaluating the quality of texts."
+with open("eval_instruction_prompt.txt","r",encoding="utf-8") as file:
+    prompt_template = file.read()
+
+def gpt_score_academic_instruction(title,abstract,prediction,ground_truth,**kwargs):
+    prompt = prompt_template.replace("{title}",title).replace("{abstract}",abstract).replace("{ground_truth}",ground_truth).replace("{generated_text}",prediction)
+    trys = 0
+    score = None
+    while (score is None) and (trys < 5):
+        msg = [{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}]
+        response = query_llm(msg, GPT_MODEL, temperature=0, return_usage=True)
+        print(response)
+        if isinstance(response, str) and 'Trigger' in response:
+            prompt_tokens, completion_tokens = 0, 0
+            score = None
+            print(1)
+            break
+        try:
+            response, gpt_usage = response
+            print(response)
+            print(gpt_usage)
+            prompt_tokens, completion_tokens = gpt_usage["prompt_tokens"], gpt_usage["completion_tokens"]
+            # score = re.findall(r"\[\[([^\]]+)\]\]", response)[-1]
+            # matches = re.findall(r"\d+\.\d+|\d+", score)
+            # score = matches[0]
+            response = json.loads(response.replace('```json','').replace('```',''))
+            score = response['scores']
+            print(score)
+        except Exception as e:
+            trys += 1
+            response = None
+            prompt_tokens, completion_tokens = 0, 0
+            score = None
+            print("Error")
+            print(e)
+    if score is None:
+        return 0.0
+    kwargs["gpt_usage"]["responses"].append(response)
+    kwargs["gpt_usage"]["prompt_tokens"] += prompt_tokens
+    kwargs["gpt_usage"]["completion_tokens"] += completion_tokens
+    return response
+    
 
 def gpt_score_qa(prediction, ground_truth, **kwargs):
     # 评分标准：1-3分，1分表示完全错误，2分表示部分正确，3分表示完全正确

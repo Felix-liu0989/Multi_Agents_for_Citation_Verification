@@ -6,13 +6,24 @@ sys.path.append('../')
 from llm_api import query_llm
 
 GPT_MODEL = "deepseek-chat"
-need_citation_prompt_template = """You are an expert in evaluating text quality. You will receive a user's question regarding their uploaded document (due to the length of the document, it is not shown to you), an AI assistant's response based on the document, and a sentence from the response. Your task is to determine whether this sentence is a factual statement made based on the information in the document that requires citation, rather than an introductory sentence, transition sentence, or a summary, reasoning, or inference based on the previous response.
+need_citation_prompt_template = """You are an expert in academic writing and citation verification. You will receive:
+
+A researcher's abstract about an academic paper,
+
+An AI assistant's generated introduction based on the abstract,
+
+A citation statement from the introduction,
+
+
+Your task is to determine whether this sentence is a factual statement made based on the information in the document that requires citation, 
+rather than an introductory sentence, transition sentence, or a summary, reasoning, or inference based on the previous response.
+
 Ensure that you do not use any other external information during your evaluation. 
 Please first provide your judgment (answer with [[Yes]] or [[No]]), then provide your analysis in the format "Need Citation: [[Yes/No]] Analysis: ...".\n\n{}
 """
 
 def cat_qa_and_statement(question, answer, statement):
-    prompt = f"<question>\n{question.strip()}\n</question>\n\n<response>\n{answer.strip()}\n</response>\n\n<sentence>\n{statement.strip()}\n</sentence>"
+    prompt = f"<abstract>\n{question.strip()}\n</abstract>\n\n<introduction>\n{answer.strip()}\n</introduction>\n\n<sentence>\n{statement.strip()}\n</sentence>"
     return prompt
 
 def need_citation_to_score(s):
@@ -47,15 +58,40 @@ def need_citation(question, answer, sentence):
             break
     return score, output, usage
     
-support_prompt_template = """You are an expert in evaluating text quality. You will receive a user's question about an uploaded document, a factual statement from an AI assistant's response based on that document, and a snippet from the document (since the document is too long to display in full). Your task is to carefully assess whether this statement is supported by the snippet. Please use the following scale to generate your rating:
-- [[Fully supported]] - Most information in the statement is supported by or extracted from the snippet. This applies only to cases where the statement and parts of the snippet are almost identical. 
-- [[Partially supported]] - More than half of the content in the statement is supported by the snippet, but a small portion is either not mentioned or contradicts the snippet. For example, if the statement has two key points and the snippet supports only one of them, it should be considered [Partially supported].
-- [[No support]] - The statement is largely unrelated to the snippet, or most key points in the statement do not align with the content of the snippet.
-Ensure that you do not use any information or knowledge outside of the snippet when evaluating. 
-Please provide the rating first, followed by the analysis, in the format "Rating: [[...]] Analysis: ...". \n\n{}"""
+support_prompt_template = '''You are an expert in academic writing and citation verification. You will receive:
+
+A researcher's abstract about an academic paper,
+
+A citation statement from an AI assistant's generated introduction based on the abstract,
+
+A relevant excerpt from a cited paper
+
+Evaluate whether the citation is substantiated by the excerpt using this scale:
+
+[[Fully supported]] - The statement accurately reflects the excerpt's claims, including key findings, methodologies or conclusions. Applies only when claims are directly verifiable.
+
+[[Partially supported]] - The statement captures some elements correctly but misrepresents/misses other significant aspects (e.g. overgeneralizing findings, omitting limitations).
+
+[[No support]] - The claimed citation contradicts or bears no meaningful connection to the excerpt.
+
+Important:
+
+Consider only explicit evidence in the excerpt
+
+Flag any statistical claims without specific values
+
+Note when claims exceed the excerpt's scope
+
+Verify proper contextualization of quoted material
+
+Please provide the rating first, followed by the analysis, in the format "Rating: [[...]] Analysis: ...". \n\n{}
+
+'''
+
+
 
 def cat_question_statement_context(question, statement, context):
-    prompt = f"<question>\n{question.strip()}\n</question>\n\n<statement>\n{statement.strip()}\n</statement>\n\n<snippet>\n{context.strip()}\n</snippet>\n\n"
+    prompt = f"<abstract>\n{question.strip()}\n</abstract>\n\n<statement>\n{statement.strip()}\n</statement>\n\n<snippet>\n{context.strip()}\n</snippet>\n\n"
     return prompt
 
 def support_level_to_score(s):
@@ -127,7 +163,15 @@ def score_recall(question, answer, statements_with_citations):
     else:
         return np.mean(scores), statements_with_citations, usages
         
-relevant_prompt_template = """You are an expert in evaluating text quality. You will receive a user's question about an uploaded document, a factual statement from an AI assistant's response based on that document, and a snippet from the document (since the document is too long to display in full). Your task is to carefully assess whether the snippet contains some key information of the statement. Please use the following grades to generate the rating:
+relevant_prompt_template = """You are an expert in academic writing and citation verification. You will receive:
+
+A researcher's abstract about an academic paper,
+
+A citation statement from an AI assistant's response claiming to reference that paper,
+
+A relevant excerpt from the cited paper (as full text cannot be displayed).
+
+Your task is to carefully assess whether the snippet contains some key information of the statement. Please use the following grades to generate the rating:
 - [[Relevant]] - Some key points of the statement are supported by the snippet or extracted from it.
 - [[Unrelevant]] - The statement is almostly unrelated to the snippet, or all key points of the statement are inconsistent with the snippet content.
 Ensure that you do not use any information or knowledge outside of the snippet when evaluating. 
@@ -148,12 +192,14 @@ def is_relevant(question, statement, citation):
     prompt = relevant_prompt_template.format(cat_question_statement_context(question, statement, citation))
     for t in range(5):
         msg = [{'role': 'user', 'content': prompt}]
-        output = query_llm(msg, model=GPT_MODEL, temperature=0 if t == 0 else 1, max_new_tokens=100, stop="Analysis:", return_usage=True)
+        output = query_llm(msg, model=GPT_MODEL, temperature=0 if t == 0 else 1, max_new_tokens=256, stop="Analysis:", return_usage=True)
+
         if isinstance(output, tuple):
             output, usage = output
             score = relevant_level_to_score(output)
         else:
-            score, usage = None, None
+            score = relevant_level_to_score(output)
+            usage = None
         if score is None:
             print("Unexcept relevant output: ", output)
             if 'Trigger' in output:
@@ -169,6 +215,7 @@ def score_precision(question, answer, statements_with_citations):
         statement, citations = js['statement'], js['citation']
         for c in citations:
             score, output, usage = is_relevant(question, statement, c['cite'])
+
             usage = usage
             usages.append(usage)
             c.update({

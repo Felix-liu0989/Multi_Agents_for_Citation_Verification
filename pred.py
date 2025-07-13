@@ -27,7 +27,7 @@ else:
     opts = []
 
 s = set(x['idx'] for x in opts)
-need_list = [x for x in ipts[0:13] if x['idx'] not in s][:]
+need_list = [x for x in ipts[13:15] if x['idx'] not in s][:]
 print(f'Model: {cite_model}')
 print(f'Already predict: {len(opts)} | Remain to predict: {len(need_list)}')
 if len(need_list) == 0:
@@ -303,13 +303,13 @@ def process_with_iterations(js,max_iterations = 3,score_threshold = 0.7):
 if __name__ == "__main__":
     # 调试模式
     DEBUG = True
-    
     if DEBUG:
         # 单进程调试模式
         for item in need_list[:]:  # 处理所有样本
             print(f"\n处理样本 {item['idx']}:")
             print(f"问题: {item['query']}")
-            result = process_with_iterations(item)
+            result = process(item)
+            # process_with_iterations(item)
             if result:
                 print("\n最终结果:")
                 print(f"最佳迭代次数: {result['best_result']['iteration']}")

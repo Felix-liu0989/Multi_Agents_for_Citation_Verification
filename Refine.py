@@ -1,7 +1,7 @@
 from llm_api import query_llm
 
 
-with open('D:\Mydesktop\Agent文献\Code\LongCite-main\LongBench-Cite\one_shot_prompt.txt', "r",encoding='utf-8') as fp:
+with open('D:\Mydesktop\CitAgent\Code\LongCite-main\LongBench-Cite\one_shot_prompt.txt', "r",encoding='utf-8') as fp:
     prompt_format = fp.read()
 
 def generate_feedback(query, prediction, evaluation_result,cite_model):
@@ -15,7 +15,7 @@ Evaluation results:
 - Citation precision: {evaluation_result['evaluation']['citation_precision']:.3f}
 - Citation recall: {evaluation_result['evaluation']['citation_recall']:.3f}
 - Citation F1 score: {evaluation_result['evaluation']['citation_f1']:.3f}
-- Answer correctness: {evaluation_result['evaluation']['correct_score']:.3f}
+- Answer correctness: {evaluation_result['evaluation']['detailed_score']['mean_score']:.3f}
 
 ## Feedback Instruction
 

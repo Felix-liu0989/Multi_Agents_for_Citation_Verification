@@ -1,0 +1,86 @@
+[project]
+name = "citegeist-arxiv"
+version = "0.0.1"
+description = "Generates a related work analysis including all used citations."
+authors = [
+    {name = "Carl-Leander Henneking", email = "ch2273@cornell.edu"},
+    {name = "Claas Beger", email = "cbb89@cornell.edu"}
+]
+readme = "README.md"
+urls = { Repository = "https://github.com/chenneking/citegeist" }
+
+requires-python = ">=3.12"
+
+# Core dependencies used by citegeist:
+dependencies = [
+    "bertopic>=0.16.4,<0.17.0",
+    "sentence-transformers>=3.3.1,<4.0.0",
+    "pymilvus>=2.5.0,<3.0.0",
+    "python-dotenv>=1.0.1",
+    "arxiv>=2.1.3",
+    "requests>=2.32.3",
+    "PyMuPDF>=1.24.14",
+    "scikit-learn>=1.5.2",
+    "python-dotenv>=1.0.1"
+]
+
+
+[project.optional-dependencies]
+# Dependencies required to run the FastAPI-based webapp
+webapp = [
+    "fastapi>=0.115.5,<0.116.0",
+    "uvicorn>=0.32.1,<0.33.0",
+    "python-multipart>=0.0.18",
+    "slowapi==0.1.9"
+]
+# Dependencies required for core development activities in this repository
+dev = [
+    "black>=25.1.0,<26.0.0",
+    "flake8>=7.1.2,<8.0.0",
+    "isort>=6.0.1,<7.0.0",
+    "pre-commit>=4.2.0,<5.0.0"
+]
+# Dependencies required only to setup and import raw arXiv data into milvus
+milvus-setup = [
+    "pymilvus[bulk_writer]>=2.5.0",
+    "jsonlines>=4.0.0",
+    "torch>=2.5.1",
+    "numpy>=2.0.2"
+]
+
+[tool.black]
+line-length = 121
+skip-string-normalization = false
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/'''
+
+[tool.isort]
+profile = "black"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = [
+    "citegeist.database*",
+    "webapp*",
+    "**/__pycache__",
+    "**/.DS_Store",
+    "**/.gitignore",
+    "tests*",
+]
+
+[tool.setuptools]
+include-package-data = false
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

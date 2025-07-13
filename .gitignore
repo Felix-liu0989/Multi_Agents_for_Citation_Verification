@@ -1,0 +1,41 @@
+venv
+database.db
+.env
+.database.db.lock
+src/webapp/temporary
+api_key.json
+dist
+*/*.egg-info
+
+# Python编译文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# PDF文件（论文等）
+*.pdf
+
+# 内部数据文件
+internal_collection.json
+*.xlsx
+*.csv
+*.json
+*.txt
+*.log
+*.md
+*.html
+*.css
+
+# Jupyter Notebook检查点
+.ipynb_checkpoints/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# 临时文件
+*.tmp
+*.temp
