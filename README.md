@@ -1,0 +1,72 @@
+The core implementation of the Multi-Agent Collaborative Generation (MACG) framework for generating high-quality related work sections with citation verification and correction capabilities.
+
+## 📁 Directory Structure
+
+### Core Components
+
+#### `citegeist/` - Main Framework
+- **`generator.py`** - Core generator class with citation validation and correction
+- **`utils/`** - Utility functions and helper modules
+- **`database/`** - Database interaction modules
+- **`__init__.py`** - Package initialization
+
+#### `baselines/` - Baseline Implementations
+- **`baseline_perplexity_deep_research.py`** - Perplexity Deep Research baseline
+- **`baseline_naive_rag_gpt.py`** - Naive RAG with GPT baseline
+- **`baseline_vallina_gpt.py`** - Vanilla GPT baseline
+
+#### `multi_dims/` - Multi-dimensional Analysis
+- Multi-dimensional literature analysis and visualization tools
+
+
+## 🚀 Key Features
+
+### 1. Citation Verification & Correction
+- **Dual-model validation** using Gemini and DeepSeek
+- **Error classification** into 5 categories:
+  - Direct Contradiction
+  - Information Not Present / Unsubstantiated
+  - Misrepresentation / Imprecise Wording
+  - Incorrect Attribution
+  - Other
+
+### 2. Multi-Agent Framework
+- **Summarizer Agent** - Generates concise literature summaries
+- **Structurer Agent** - Identifies and groups research themes
+- **Integrator Agent** - Synthesizes outputs into coherent narrative
+- **FactCheck Agent** - Verifies fidelity to source material
+
+### 3. Evaluation Metrics
+- **Claim Precision** - Accuracy of individual claims
+- **Citation Precision** - Accuracy of citations
+- **Reference Precision** - Accuracy of source attribution
+- **Citation Density** - Citation frequency per sentence
+- **Average Citations per Sentence** - Citation distribution
+
+## 🔧 Usage
+
+### Basic Usage
+```python
+from citegeist.generator import Generator
+import os
+import json,jsonlines
+import time
+from citegeist.utils.infer import load_processed_ids
+
+generator = Generator(
+   llm_provider="gemini",  # Choice of: "azure" (OpenAI Studio), "anthropic", "gemini", "mistral", and "openai"
+   api_key=os.environ.get("OPENROUTER_API_KEY"), # Here, you will need to set the respective API key
+   model_name="google/gemini-2.5-flash", # Choose the model that the provider supports
+   database_uri=os.environ.get("MILVUS_URI", ""),  # Set the path (local) / url (remote) for the Milvus DB connection
+   database_token=os.environ.get("MILVUS_TOKEN", ""),  # Optionally, also set the access token (you DON'T need to set this when using the locally hosted Milvus Database)
+)
+
+abstract = ""
+result = generator.generate_related_work_MACG(abstract, 10, 2, 0.0)
+```
+
+、
+
+
+
+---
