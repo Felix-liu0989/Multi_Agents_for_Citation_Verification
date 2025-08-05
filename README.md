@@ -1,6 +1,75 @@
 The core implementation of the Multi-Agent Collaborative Generation (MACG) framework for generating high-quality related work sections with citation verification and correction capabilities.
 
-## 📁 Directory Structure
+ Environment Setup for MACG Framework
+
+## 🐍 Python Environment Setup
+
+### Option 1: Using Conda (Recommended)
+
+```bash
+# Create conda environment
+conda create -n taxo python=3.10 -y
+conda activate taxo
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## 📦 Core Dependencies
+
+## 🔧 Environment Variables
+
+Create a `.env` file in the project root:
+
+```bash
+# LLM API Keys
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+GOOGLE_API_KEY=your_google_key
+DEEPSEEK_API_KEY=your_deepseek_key
+
+# Vector Database
+MILVUS_URI=your_milvus_uri
+MILVUS_TOKEN=your_milvus_token
+
+# Model Paths
+SENTENCE_TRANSFORMER_MODEL=/path/to/sentence/transformer
+BERTOPIC_MODEL=/path/to/bertopic/model
+```
+
+## 🚀 Quick Start
+
+1. **Activate Environment**
+   ```bash
+   conda activate taxo
+   ```
+
+2. **Set Environment Variables**
+   ```bash
+   export OPENAI_API_KEY="your_key"
+   export MILVUS_URI="your_uri"
+   ```
+
+3. **Basic Usage**
+```python
+from citegeist.generator import Generator
+import os
+import json,jsonlines
+import time
+from citegeist.utils.infer import load_processed_ids
+
+generator = Generator(
+   llm_provider="gemini",  # Choice of: "azure" (OpenAI Studio), "anthropic", "gemini", "mistral", and "openai"
+   api_key=os.environ.get("OPENROUTER_API_KEY"), # Here, you will need to set the respective API key
+   model_name="google/gemini-2.5-flash", # Choose the model that the provider supports
+   database_uri=os.environ.get("MILVUS_URI", ""),  # Set the path (local) / url (remote) for the Milvus DB connection
+   database_token=os.environ.get("MILVUS_TOKEN", ""),  # Optionally, also set the access token (you DON'T need to set this when using the locally hosted Milvus Database)
+)
+
+abstract = ""
+result = generator.generate_related_work_MACG(abstract, 10, 2, 0.0)
+```
+
 
 ### Core Components
 
@@ -43,29 +112,8 @@ The core implementation of the Multi-Agent Collaborative Generation (MACG) frame
 - **Citation Density** - Citation frequency per sentence
 - **Average Citations per Sentence** - Citation distribution
 
-## 🔧 Usage
 
-### Basic Usage
-```python
-from citegeist.generator import Generator
-import os
-import json,jsonlines
-import time
-from citegeist.utils.infer import load_processed_ids
 
-generator = Generator(
-   llm_provider="gemini",  # Choice of: "azure" (OpenAI Studio), "anthropic", "gemini", "mistral", and "openai"
-   api_key=os.environ.get("OPENROUTER_API_KEY"), # Here, you will need to set the respective API key
-   model_name="google/gemini-2.5-flash", # Choose the model that the provider supports
-   database_uri=os.environ.get("MILVUS_URI", ""),  # Set the path (local) / url (remote) for the Milvus DB connection
-   database_token=os.environ.get("MILVUS_TOKEN", ""),  # Optionally, also set the access token (you DON'T need to set this when using the locally hosted Milvus Database)
-)
-
-abstract = ""
-result = generator.generate_related_work_MACG(abstract, 10, 2, 0.0)
-```
-
-、
 
 
 
