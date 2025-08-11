@@ -1,7 +1,8 @@
 The core implementation of the Multi-Agent Collaborative Generation (MACG) framework for generating high-quality related work sections with citation verification and correction capabilities.
-![Uploading image.png…]()
+
 
  Environment Setup for MACG Framework
+![Uploading image.png…]()
 
 ## 🐍 Python Environment Setup
 
