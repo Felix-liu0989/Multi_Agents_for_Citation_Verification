@@ -2,7 +2,7 @@ The core implementation of the Multi-Agent Collaborative Generation (MACG) frame
 
 
  Environment Setup for MACG Framework
-![Uploading image.png…]()
+
 
 ## 🐍 Python Environment Setup
 
