@@ -1,7 +1,7 @@
-The core implementation of the Multi-Agent Collaborative Generation (MACG) framework for generating high-quality related work sections with citation verification and correction capabilities.
+The core implementation of the Multi-Agent Collaborative Generation (MA-RWG) framework for generating high-quality related work sections with citation verification and correction capabilities.
 
 
- Environment Setup for MACG Framework
+ Environment Setup for MA-RWG Framework
 
 
 ## 🐍 Python Environment Setup
